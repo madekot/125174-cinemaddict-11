@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Михаил Голубцов](https://up.htmlacademy.ru/ecmascript/11/user/125174).
-* Наставник: `Неизвестно`.
+* Наставник: [Анна Тюрина](https://up.htmlacademy.ru/ecmascript/11/user/549147).
 
 ---
 
