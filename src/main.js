@@ -372,5 +372,7 @@ const renderMostCommentedFilmCar = () => {
 const repeitMostCommentedFilmCard = renderMakeRepeat(renderMostCommentedFilmCar, Repeit.MOST_COMMENTED_FILM_CARD);
 repeitMostCommentedFilmCard();
 
-const renderPopUpFilmDetails = makeRender({container: document.body, template: createPopUpFilmDetailsTemplate()});
+const renderPopUpFilmDetails = () => {
+  return makeRender({container: document.body, template: createPopUpFilmDetailsTemplate()});
+};
 renderPopUpFilmDetails();
