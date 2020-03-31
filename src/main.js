@@ -1,11 +1,12 @@
 "use strict";
 
-const Repeit = {
+const Repeat = {
   FILM_CARD: 5,
   TOP_RATED_FILM_CARD: 2,
   MOST_COMMENTED_FILM_CARD: 2
 };
 
+const siteMainElement = document.querySelector(`.main`);
 
 const createUserMenuTemplate = () => {
   return (
@@ -310,69 +311,60 @@ const render = ({container, template, place = `beforeend`}) => {
   container.insertAdjacentHTML(place, template, place);
 };
 
-const makeRender = ({container, template, place}) => {
-  return render({container, template, place});
-};
-
 const renderMenuUser = () => {
   const siteHeaderElement = document.querySelector(`.header`);
-  return makeRender({container: siteHeaderElement, template: createUserMenuTemplate()});
+  return render({container: siteHeaderElement, template: createUserMenuTemplate()});
 };
-renderMenuUser();
 
-const siteMainElement = document.querySelector(`.main`);
 const renderStatisticsMenu = () => {
-  return makeRender({container: siteMainElement, template: createStatisticsMenuTemplate()});
+  return render({container: siteMainElement, template: createStatisticsMenuTemplate()});
 };
-renderStatisticsMenu();
 
 const renderMenuSorting = () => {
-  return makeRender({container: siteMainElement, template: createSortingMenuTemplate()});
+  return render({container: siteMainElement, template: createSortingMenuTemplate()});
 };
-renderMenuSorting();
 
 const siteContentRender = () => {
   render({container: siteMainElement, template: createContentSiteTemplate()});
 };
-siteContentRender();
 
-const filmCardWrapperElement = siteMainElement.querySelector(`.films-list .films-list__container`);
 const renderFilmCard = () => {
-  return makeRender({container: filmCardWrapperElement, template: createFilmCardTemplate()});
+  const filmCardWrapperElement = siteMainElement.querySelector(`.films-list .films-list__container`);
+  return render({container: filmCardWrapperElement, template: createFilmCardTemplate()});
 };
 
-const renderMakeRepeat = (cb, repetition) => {
-  return () => {
-    for (let i = 0; i < repetition; i++) {
-      cb();
-    }
-  };
+const renderList = (cb, count) => {
+  for (let i = 0; i < count; i++) {
+    cb();
+  }
 };
-
-const repeitRenderFilmCard = renderMakeRepeat(renderFilmCard, Repeit.FILM_CARD);
-repeitRenderFilmCard();
 
 const renderShowMoreButton = () => {
   const filmsListElement = siteMainElement.querySelector(`.films-list`);
-  return makeRender({container: filmsListElement, template: createShowMoreButtonTemplate()});
+  return render({container: filmsListElement, template: createShowMoreButtonTemplate()});
 };
-renderShowMoreButton();
 
 const renderTopRatedFilmCard = () => {
   const topRatedFilmCardWrapperElement = siteMainElement.querySelector(`.films-list--extra:nth-of-type(2) .films-list__container`);
-  return makeRender({container: topRatedFilmCardWrapperElement, template: createTopRatedFilmCardTemplate()});
+  return render({container: topRatedFilmCardWrapperElement, template: createTopRatedFilmCardTemplate()});
 };
-const repeitTopRatedFilmCard = renderMakeRepeat(renderTopRatedFilmCard, Repeit.TOP_RATED_FILM_CARD);
-repeitTopRatedFilmCard();
 
 const renderMostCommentedFilmCar = () => {
   const mostCommentedFilmCardWrapperElement = siteMainElement.querySelector(`.films-list--extra:nth-of-type(3) .films-list__container`);
-  return makeRender({container: mostCommentedFilmCardWrapperElement, template: createMostCommentedFilmCardTemplate()});
+  return render({container: mostCommentedFilmCardWrapperElement, template: createMostCommentedFilmCardTemplate()});
 };
-const repeitMostCommentedFilmCard = renderMakeRepeat(renderMostCommentedFilmCar, Repeit.MOST_COMMENTED_FILM_CARD);
-repeitMostCommentedFilmCard();
 
 const renderPopUpFilmDetails = () => {
-  return makeRender({container: document.body, template: createPopUpFilmDetailsTemplate()});
+  return render({container: document.body, template: createPopUpFilmDetailsTemplate()});
 };
+
+
+renderMenuUser();
+renderStatisticsMenu();
+renderMenuSorting();
+siteContentRender();
+renderList(renderFilmCard, Repeat.FILM_CARD);
+renderShowMoreButton();
+renderList(renderTopRatedFilmCard, Repeat.TOP_RATED_FILM_CARD);
+renderList(renderMostCommentedFilmCar, Repeat.MOST_COMMENTED_FILM_CARD);
 renderPopUpFilmDetails();
