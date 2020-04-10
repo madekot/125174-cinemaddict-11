@@ -70,6 +70,11 @@ const renderPopUpFilmDetails = () => {
   return render({container: document.body, template: createPopUpFilmDetailsTemplate()});
 };
 
+const hidePopUpFilmDetails = () => {
+  const filmDetailsElement = document.querySelector(`.film-details`);
+  filmDetailsElement.classList.add(`visually-hidden`);
+};
+
 
 renderMenuUser();
 renderStatisticsMenu();
@@ -80,3 +85,4 @@ renderShowMoreButton();
 renderList(renderTopRatedFilmCard, Repeat.TOP_RATED_FILM_CARD);
 renderList(renderMostCommentedFilmCar, Repeat.MOST_COMMENTED_FILM_CARD);
 renderPopUpFilmDetails();
+hidePopUpFilmDetails();
