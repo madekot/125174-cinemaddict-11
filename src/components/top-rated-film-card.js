@@ -27,6 +27,7 @@ const createTopRatedFilmCardTemplate = () => {
         </form>
       </article>`
   );
+  // TODO: шаблоны одинаковые, нужно этот удалить и подклчють вместо него film-Card;
 };
 
 export {createTopRatedFilmCardTemplate};

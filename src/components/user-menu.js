@@ -1,3 +1,5 @@
+import {filmCards} from "../main.js";
+
 const createUserMenuTemplate = () => {
   const src = `images/bitmap@2x.png`;
   const rating = `Movie Buff`;

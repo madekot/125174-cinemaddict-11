@@ -1,4 +1,5 @@
-const createMostCommentedFilmCardTemplate = () => {
+const createMostCommentedFilmCardTemplate = (filmCard) => {
+  // const {title, rating, year, duration, genre, description, comments} = filmCard;
   const title = `Santa Claus Conquers the Martians`;
   const rating = 2.3;
   const year = 1964;
@@ -24,7 +25,7 @@ const createMostCommentedFilmCardTemplate = () => {
           <button class="film-card__controls-item button film-card__controls-item--favorite film-card__controls-item--active">Mark as favorite</button>
         </form>
     </article>`
-    // TODO: написать логику для добавлнения класса film-card__controls-item--active ;
+    // TODO: шаблоны одинаковые, нужно этот удалить и подклчють вместо него film-Card;
   );
 };
 

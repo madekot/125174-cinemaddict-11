@@ -1,19 +1,33 @@
-const createDetailsRowMarkup = (term, cell) => {
+const createGenresMarkup = (genres) => {
+  return genres.map((genre) => {
+    return `<span class="film-details__genre">${genre}</span>`;
+  }).join(`\n`);
+};
+
+const createDetailsRowMarkup = (row) => {
+  const {name, value} = row;
+  const isOne = value.length === 1;
+  const isGenre = name === `Genre`;
   return (`
     <tr class="film-details__row">
-      <td class="film-details__term">${term}</td>
-      <td class="film-details__cell">${cell}</td>
-    </tr>      
+      <td class="film-details__term">${isOne && Array.isArray(value) ? name : `${name}s`}</td>
+      <td class="film-details__cell">${isGenre ? createGenresMarkup(value) : value}</td>
+    </tr>    
   `);
 };
 
-const createInfoMarkup = () => {
-  const src = `./images/posters/the-great-flamarion.jpg`;
-  const age = 18;
-  const title = `The Great Flamarion`;
-  const titleOriginal = `The Great Flamarion`;
-  const totalRating = 8.9;
-  const description = `The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless, and misogynous marksman who displays his trick gunshot act in the vaudeville circuit. His show features a beautiful assistant, Connie (Mary Beth Hughes) and her drunken husband Al (Dan Duryea), Flamarion's other assistant. Flamarion falls in love with Connie, the movie's femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.`;
+const createDetailsRowsMarkup = (rows) => {
+  return rows.map((row) => createDetailsRowMarkup(row)).join(`\n`);
+};
+
+
+const createInfoMarkup = (card) => {
+  const {src, age, title, originalTitle, rating, description} = card;
+  // const releaseDate = `30 March 1945`; // TODO: Написать функцию для рандомного времени;
+  // const runtime = `1h 18m`; // TODO: Написать функцию для рандомного времени;
+
+  const rows = card.moreInfo;
+  const detailsRowsMarkup = createDetailsRowsMarkup(rows);
   return (`
     <div class="film-details__poster">
       <img class="film-details__poster-img" src="${src}" alt="${title}">
@@ -25,28 +39,16 @@ const createInfoMarkup = () => {
       <div class="film-details__info-head">
         <div class="film-details__title-wrap">
           <h3 class="film-details__title">${title}</h3>
-          <p class="film-details__title-original">Original: ${titleOriginal}</p>
+          <p class="film-details__title-original">Original: ${originalTitle}</p>
         </div>
 
         <div class="film-details__rating">
-          <p class="film-details__total-rating">${totalRating}</p>
+          <p class="film-details__total-rating">${rating}</p>
         </div>
       </div>
 
       <table class="film-details__table">
-        ${createDetailsRowMarkup(`Director`, `Anthony Mann`)}
-        ${createDetailsRowMarkup(`Writers`, `Anne Wigton, Heinz Herald, Richard Weil`)}
-        ${createDetailsRowMarkup(`Actors`, `Erich von Stroheim, Mary Beth Hughes, Dan Duryea`)}
-        ${createDetailsRowMarkup(`Release Date`, `30 March 1945`)}
-        ${createDetailsRowMarkup(`Runtime`, `1h 18m`)}
-        ${createDetailsRowMarkup(`Country`, `USA`)}
-        <tr class="film-details__row">
-          <td class="film-details__term">Genres</td>
-          <td class="film-details__cell">
-            <span class="film-details__genre">Drama</span>
-            <span class="film-details__genre">Film-Noir</span>
-            <span class="film-details__genre">Mystery</span></td>
-        </tr>
+        ${detailsRowsMarkup}
       </table>
 
       <p class="film-details__film-description">
@@ -57,8 +59,8 @@ const createInfoMarkup = () => {
 };
 
 const createFilmDetailsCommentMarkup = () => {
-  const srcEmoji = `./images/emoji/smile.png`;
   const emojiName = `smile`;
+  const srcEmoji = `./images/emoji/${emojiName}.png`;
   const commentText = `Interesting setting and a good cast`;
   const commentAuthor = `Tim Macoveev`;
   const commentDay = `2019/12/31 23:59`;
@@ -79,7 +81,7 @@ const createFilmDetailsCommentMarkup = () => {
 
 const createEmojiListItem = () => {
   const emojiName = `smile`;
-  const srcEmoji = `./images/emoji/smile.png`;
+  const srcEmoji = `./images/emoji/${emojiName}.png`;
   return (`
     <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emojiName}" value="${emojiName}">
     <label class="film-details__emoji-label" for="emoji-${emojiName}">
@@ -88,13 +90,14 @@ const createEmojiListItem = () => {
   `);
 };
 
-const createPopUpFilmDetailsTemplate = () => {
-  const commentsCount = 4;
-  const infoMarkup = createInfoMarkup();
+const createPopUpFilmDetailsTemplate = (filmCard) => {
+  const commentsCount = filmCard.commentQuantity;
+  const infoMarkup = createInfoMarkup(filmCard);
   const filmDetailsCommentMarkup = createFilmDetailsCommentMarkup();
   const emojiListItem = createEmojiListItem();
   // TODO: Заменить разметку на функцию createFilmDetailsCommentMarkup;
   // TODO: Заменить разметку на функцию createEmojiListItem;
+  // TODO: реализовать передачу состояния на кнопки film-details__controls;
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -107,7 +110,7 @@ const createPopUpFilmDetailsTemplate = () => {
           </div>
 
           <section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist"> 
             <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
             <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
