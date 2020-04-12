@@ -1,11 +1,5 @@
 import {utils} from "../utils";
 
-const offersRangeCounter = {
-  MIN: 1,
-  MAX: 5
-};
-
-
 
 const titles = [`Dracula`, `Evil Dead`, `Carrie`, ` King Kong`, `Re-Animator`, `Halloween`, `Alien`, `Black Christmas`];
 const genres = [`Western`, `Gangster`, `Detective`, `Drama`, `Historical`, `Comedy`, `Melodrama`];
@@ -27,20 +21,30 @@ const getRandomArr = (arr, quality) => {
   return offers;
 };
 
-// console.log(generateCommentCard());
+const generateCommentCard = () => {
+  return {
+    emojiName: utils.getRandomArrayItem(emojiNames),
+    commentText: utils.getRandomArrayItem(comments),
+    commentAuthor: utils.getRandomArrayItem(authors),
+    commentDay: `2019/12/31 23:59`,
+  };
+};
+
+const generateCommentListCard = (count) => {
+  const result = [];
+  for (let i = 0; i < count; i++) {
+    result.push(generateCommentCard());
+  }
+  return result;
+};
 
 const generateFilmCard = () => {
-  const commentsRangeCounter = {
-    MIN: 0,
-    MAX: 5
-  };
-
   const Year = {
     MIN: 1960,
     MAX: 1980,
   };
 
-  const Rating = {
+  const RatingRange = {
     MIN: 3,
     MAX: 7,
   };
@@ -50,24 +54,34 @@ const generateFilmCard = () => {
     MAX: 18,
   };
 
-  const commentsCounter = utils.getRandomIntegerNumber(offersRangeCounter.MIN, offersRangeCounter.MAX);
-  const offersCounter = utils.getRandomIntegerNumber(commentsRangeCounter.MIN, commentsRangeCounter.MAX);
-  const randomQuantity = utils.getRandomIntegerNumber(1, 3);
+  const OfferRangeCounter = {
+    MIN: 1,
+    MAX: 5
+  };
+
+  const CommentRangeCounter = {
+    MIN: 0,
+    MAX: 5
+  };
+
+  const counterRange = {
+    MIN: 1,
+    MAX: 5
+  };
+
+  const randomOfferCounter = utils.getRandomIntegerNumber(OfferRangeCounter.MIN, OfferRangeCounter.MAX);
+  const randomQuantity = utils.getRandomIntegerNumber(counterRange.MIN, counterRange.MAX);
+  const randomCounterComment = utils.getRandomIntegerNumber(CommentRangeCounter.MIN, CommentRangeCounter.MAX);
+  //  TODO: сделать отнообрано передачу аргументов в функцию, и названия;
   return {
-    comments: {
-      emojiName: utils.getRandomArrayItem(emojiNames),
-      commentText: utils.getRandomArrayItem(comments),
-      commentAuthor: utils.getRandomArrayItem(authors),
-      commentDay: `2019/12/31 23:59`, // TODO:Написать функцию для генерации случайного времени
-    },
-    commentQuantity: commentsCounter,
-    description: getRandomArr(descriptions, offersCounter).join(` `),
+    comments: generateCommentListCard(randomCounterComment),
+    description: getRandomArr(descriptions, randomOfferCounter).join(` `),
     duration: `1h 55m`, // TODO: написать функцию для рандома времени
     genre: getRandomArr(genres, randomQuantity).join(` `),
     isFavorite: utils.getRandomBoolean(),
     isWatched: utils.getRandomBoolean(),
     isWatchlist: utils.getRandomBoolean(),
-    rating: utils.getRandomFractionalNumber(Rating.MIN, Rating.MAX),
+    rating: utils.getRandomFractionalNumber(RatingRange.MIN, RatingRange.MAX),
     src: `./images/posters/${utils.getRandomArrayItem(srcPosters)}`,
     title: utils.getRandomArrayItem(titles),
     year: utils.getRandomIntegerNumber(Year.MIN, Year.MAX),
