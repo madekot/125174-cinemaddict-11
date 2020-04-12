@@ -72,11 +72,10 @@ const generateFilmCard = () => {
   const randomOfferCounter = utils.getRandomIntegerNumber(OfferRangeCounter.MIN, OfferRangeCounter.MAX);
   const randomQuantity = utils.getRandomIntegerNumber(counterRange.MIN, counterRange.MAX);
   const randomCounterComment = utils.getRandomIntegerNumber(CommentRangeCounter.MIN, CommentRangeCounter.MAX);
-  //  TODO: сделать отнообрано передачу аргументов в функцию, и названия;
   return {
     comments: generateCommentListCard(randomCounterComment),
     description: getRandomArr(descriptions, randomOfferCounter).join(` `),
-    duration: `1h 55m`, // TODO: написать функцию для рандома времени
+    duration: `1h 55m`,
     genre: getRandomArr(genres, randomQuantity).join(` `),
     isFavorite: utils.getRandomBoolean(),
     isWatched: utils.getRandomBoolean(),
