@@ -1,4 +1,4 @@
-const createMostCommentedFilmCardTemplate = (filmCard) => {
+const createMostCommentedFilmCardTemplate = () => {
   // const {title, rating, year, duration, genre, description, comments} = filmCard;
   const title = `Santa Claus Conquers the Martians`;
   const rating = 2.3;
