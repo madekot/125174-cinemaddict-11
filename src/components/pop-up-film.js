@@ -1,7 +1,9 @@
+import {constant} from "../constant.js";
+
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
     return `<span class="film-details__genre">${genre}</span>`;
-  }).join(`\n`);
+  }).join(``);
 };
 
 const createDetailsRowMarkup = (row) => {
@@ -17,7 +19,7 @@ const createDetailsRowMarkup = (row) => {
 };
 
 const createDetailsRowsMarkup = (rows) => {
-  return rows.map((row) => createDetailsRowMarkup(row)).join(`\n`);
+  return rows.map((row) => createDetailsRowMarkup(row)).join(``);
 };
 
 
@@ -58,7 +60,7 @@ const createInfoMarkup = (card) => {
 
 const createFilmDetailsCommentMarkup = (comment) => {
   const {emojiName, commentText, commentAuthor, commentDay} = comment;
-  const srcEmoji = `./images/emoji/${emojiName}.png`;
+  const srcEmoji = constant.EmojiNameToPathEmoji[emojiName];
   return (`
     <li class="film-details__comment">  
       <span class="film-details__comment-emoji">
@@ -79,7 +81,7 @@ const createFilmDetailsCommentMarkup = (comment) => {
 const createFilmDetailsCommentListMarkup = (comments) => {
   return comments.map((comment) => {
     return createFilmDetailsCommentMarkup(comment);
-  }).join(`\n`);
+  }).join(``);
 };
 
 const createPopUpFilmDetailsTemplate = (filmCard) => {

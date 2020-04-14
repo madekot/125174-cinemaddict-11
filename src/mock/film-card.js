@@ -1,29 +1,31 @@
 import {utils} from "../utils";
-
+import {constant} from "../constant.js";
 
 const titles = [`Dracula`, `Evil Dead`, `Carrie`, ` King Kong`, `Re-Animator`, `Halloween`, `Alien`, `Black Christmas`];
 const genres = [`Western`, `Gangster`, `Detective`, `Drama`, `Historical`, `Comedy`, `Melodrama`];
 const descriptions = [`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`, `Cras aliquet varius magna, non porta ligula feugiat eget.`, `Fusce tristique felis at fermentum pharetra.`, `Aliquam id orci ut lectus varius viverra.`, `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`, `Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`, `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`, `Sed sed nisi sed augue convallis suscipit in sed felis.`, `Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus.`, `In rutrum ac purus sit amet tempus.`];
 const comments = descriptions.slice();
-const srcPosters = [`made-for-each-other.png`, `popeye-meets-sinbad.png`, `sagebrush-trail.jpg`, `santa-claus-conquers-the-martians.jpg`, `the-dance-of-life.jpg`, `the-great-flamarion.jpg`, `the-man-with-the-golden-arm.jpg`];
+const posterPaths = [
+  `./images/posters/made-for-each-other.png`,
+  `./images/posters/popeye-meets-sinbad.png`,
+  `./images/posters/sagebrush-trail.jpg`,
+  `./images/posters/santa-claus-conquers-the-martians.jpg`,
+  `./images/posters/the-dance-of-life.jpg`,
+  `./images/posters/the-great-flamarion.jpg`,
+  `./images/posters/the-man-with-the-golden-arm.jpg`,
+];
 const directors = [`Martin Scorsese`, `Peter Jackson`, `Tim Burton`, `David Fincher`, `Christopher Nolan`, `Milos Forman`];
 const writers = [`Sally Rooney`, `Guy Gunaratne`, `David Chariandy`, `Jessie Greengrass`, `Eley Williams`];
 const authors = writers.slice();
 const actors = writers.slice();
-const emojiNames = [`angry`, `puke`, `sleeping`, `smile`];
 
-const getRandomArr = (arr, quality) => {
-  const offers = [];
-  for (let i = 0; i < quality; i++) {
-    const randomItem = utils.getRandomArrayItem(arr);
-    offers.push(randomItem);
-  }
-  return offers;
+const getRandomArr = (arr, cound) => {
+  return new Array(cound).fill(``).map(() => utils.getRandomArrayItem(arr));
 };
 
 const generateCommentCard = () => {
   return {
-    emojiName: utils.getRandomArrayItem(emojiNames),
+    emojiName: utils.getRandomArrayItem(constant.emojiNames),
     commentText: utils.getRandomArrayItem(comments),
     commentAuthor: utils.getRandomArrayItem(authors),
     commentDay: `2019/12/31 23:59`,
@@ -72,18 +74,20 @@ const generateFilmCard = () => {
   const randomOfferCounter = utils.getRandomIntegerNumber(OfferRangeCounter.MIN, OfferRangeCounter.MAX);
   const randomQuantity = utils.getRandomIntegerNumber(counterRange.MIN, counterRange.MAX);
   const randomCounterComment = utils.getRandomIntegerNumber(CommentRangeCounter.MIN, CommentRangeCounter.MAX);
+  const randomData = utils.getRandomData();
+  const movieLength =  utils.getRandomMovieLength();
   return {
     comments: generateCommentListCard(randomCounterComment),
     description: getRandomArr(descriptions, randomOfferCounter).join(` `),
-    duration: `1h 55m`,
+    duration: movieLength,
     genre: getRandomArr(genres, randomQuantity).join(` `),
     isFavorite: utils.getRandomBoolean(),
     isWatched: utils.getRandomBoolean(),
     isWatchlist: utils.getRandomBoolean(),
     rating: utils.getRandomFractionalNumber(RatingRange.MIN, RatingRange.MAX),
-    src: `./images/posters/${utils.getRandomArrayItem(srcPosters)}`,
+    src: utils.getRandomArrayItem(posterPaths),
     title: utils.getRandomArrayItem(titles),
-    year: utils.getRandomIntegerNumber(Year.MIN, Year.MAX),
+    year: randomData.getFullYear(),
     originalTitle: utils.getRandomArrayItem(titles),
     age: utils.getRandomIntegerNumber(Age.MIN, Age.MAX),
     moreInfo: [
@@ -101,11 +105,11 @@ const generateFilmCard = () => {
       },
       {
         name: `Release Date`,
-        value: `30 March 1945`,
+        value: utils.castTimeFormat(randomData),
       },
       {
         name: `Runtime`,
-        value: `1h 18m`,
+        value: movieLength,
       },
       {
         name: `Country`,
@@ -119,13 +123,8 @@ const generateFilmCard = () => {
   };
 };
 
-
 const generateFilmCards = (count) => {
-  const result = [];
-  for (let i = 0; i < count; i++) {
-    result.push(generateFilmCard());
-  }
-  return result;
+  return new Array(count).fill(``).map(generateFilmCard);
 };
 
 export {generateFilmCards};
