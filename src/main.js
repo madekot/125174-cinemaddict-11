@@ -1,4 +1,3 @@
-import {utils} from "./utils";
 import {createUserMenuTemplate} from "./components/user-menu.js";
 import {createSortingMenuTemplate} from "./components/sorting-menu.js";
 import {createStatisticsMenuTemplate} from "./components/statistics-menu.js";
@@ -60,13 +59,13 @@ const hidePopUpFilmDetails = () => {
   filmDetailsElement.classList.add(`visually-hidden`);
 };
 
-const addCounterMoviesDatabase = () => {
-  const CounterRangeDatabase = {
-    MIN: 20,
-    MAX: 200,
-  };
+const addCounterMoviesDatabase = (length) => {
+  // const CounterRangeDatabase = {
+  //   MIN: 20,
+  //   MAX: 200,
+  // };
   const statistics = siteFooterElement.querySelector(`.footer__statistics`);
-  statistics.textContent = utils.getRandomIntegerNumber(CounterRangeDatabase.MIN, CounterRangeDatabase.MAX);
+  statistics.textContent = length;
 };
 
 render({container: siteHeaderElement, template: createUserMenuTemplate(filmCards)});
@@ -77,7 +76,7 @@ render({container: siteMainElement, template: createContentSiteTemplate()});
 render({container: document.body, template: createPopUpFilmDetailsTemplate(filmCards[0])});
 renderFilmCards(0, SHOWING_CARDS_COUNT_ON_START);
 renderShowMoreButton(addListenerShowMoreButton);
-addCounterMoviesDatabase();
-hidePopUpFilmDetails();
+addCounterMoviesDatabase(filmCards.length);
+// hidePopUpFilmDetails();
 
 
