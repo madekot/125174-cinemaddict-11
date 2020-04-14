@@ -77,6 +77,6 @@ render({container: document.body, template: createPopUpFilmDetailsTemplate(filmC
 renderFilmCards(0, SHOWING_CARDS_COUNT_ON_START);
 renderShowMoreButton(addListenerShowMoreButton);
 addCounterMoviesDatabase(filmCards.length);
-// hidePopUpFilmDetails();
+hidePopUpFilmDetails();
 
 
