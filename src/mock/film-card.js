@@ -41,11 +41,6 @@ const generateCommentListCard = (count) => {
 };
 
 const generateFilmCard = () => {
-  const Year = {
-    MIN: 1960,
-    MAX: 1980,
-  };
-
   const RatingRange = {
     MIN: 3,
     MAX: 7,
@@ -75,7 +70,7 @@ const generateFilmCard = () => {
   const randomQuantity = utils.getRandomIntegerNumber(counterRange.MIN, counterRange.MAX);
   const randomCounterComment = utils.getRandomIntegerNumber(CommentRangeCounter.MIN, CommentRangeCounter.MAX);
   const randomData = utils.getRandomData();
-  const movieLength =  utils.getRandomMovieLength();
+  const movieLength = utils.getRandomMovieLength();
   return {
     comments: generateCommentListCard(randomCounterComment),
     description: getRandomArr(descriptions, randomOfferCounter).join(` `),
