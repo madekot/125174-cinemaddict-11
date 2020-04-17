@@ -1,3 +1,5 @@
+const EMPTY = ``;
+
 const emojiNames = [`angry`, `puke`, `sleeping`, `smile`];
 
 const EmojiNameToPathEmoji = {
@@ -25,7 +27,8 @@ const months = [
 const constant = {
   emojiNames,
   EmojiNameToPathEmoji,
-  months
+  months,
+  EMPTY,
 };
 
 

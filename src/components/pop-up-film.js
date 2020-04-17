@@ -1,9 +1,10 @@
 import {constant} from "../constant.js";
+import {utils} from "../utils";
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
     return `<span class="film-details__genre">${genre}</span>`;
-  }).join(``);
+  }).join(constant.EMPTY);
 };
 
 const createDetailsRowMarkup = (row) => {
@@ -101,13 +102,13 @@ const createPopUpFilmDetailsTemplate = (filmCard) => {
           </div>
 
           <section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isWatchlist ? `checked` : ``}> 
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isWatchlist ? `checked` : constant.EMPTY}> 
             <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched ? `checked` : ``}>
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched ? `checked` : constant.EMPTY}>
             <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite ? `checked` : ``}>
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite ? `checked` : constant.EMPTY}>
             <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
           </section>
         </div>
@@ -156,4 +157,24 @@ const createPopUpFilmDetailsTemplate = (filmCard) => {
   );
 };
 
-export {createPopUpFilmDetailsTemplate};
+export default class FilmDetails {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createPopUpFilmDetailsTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = utils.createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

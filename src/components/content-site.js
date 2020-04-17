@@ -1,3 +1,5 @@
+import {utils} from "../utils.js";
+
 const createContentSiteTemplate = () => {
   return (
     `<section class="films">
@@ -5,19 +7,27 @@ const createContentSiteTemplate = () => {
         <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
         <div class="films-list__container"></div>
       </section>
-      <section class="films-list--extra">
-        <h2 class="films-list__title">Top rated</h2>
-        <div class="films-list__container">
-        </div>
-      </section>
-      <section class="films-list--extra">
-        <h2 class="films-list__title">Most commented</h2>
-
-        <div class="films-list__container"></article>
-        </div>
-      </section>
     </section>
     `);
 };
 
-export {createContentSiteTemplate};
+export default class ContentSite {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createContentSiteTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = utils.createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

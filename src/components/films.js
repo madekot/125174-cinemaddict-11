@@ -1,16 +1,16 @@
-import {utils} from "../utils";
+import {utils} from "../utils.js";
 
-const createShowMoreButtonTemplate = () => {
-  return `<button class="films-list__show-more">Show more</button>`;
+const createFilmsTemplate = () => {
+  return `<section class="films"></section>`;
 };
 
-export default class SortingMenu {
+export default class Films {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createShowMoreButtonTemplate();
+    return createFilmsTemplate();
   }
 
   getElement() {

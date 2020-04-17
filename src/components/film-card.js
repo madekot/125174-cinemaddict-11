@@ -1,9 +1,12 @@
+import {utils} from "../utils";
+import {constant} from "../constant";
+
 const createFilmCardTemplate = (filmCard) => {
   const {title, rating, year, duration, genre, src, description, comments, isWatchlist, isWatched, isFavorite} = filmCard;
   const commentQuantity = comments.length;
-  const watchlistButtonActiveClass = isWatchlist ? `film-card__controls-item--active` : ``;
-  const watchedButtonActiveClass = isWatched ? `film-card__controls-item--active` : ``;
-  const favoriteButtonActiveClass = isFavorite ? `film-card__controls-item--active` : ``;
+  const watchlistButtonActiveClass = isWatchlist ? `film-card__controls-item--active` : constant.EMPTY;
+  const watchedButtonActiveClass = isWatched ? `film-card__controls-item--active` : constant.EMPTY;
+  const favoriteButtonActiveClass = isFavorite ? `film-card__controls-item--active` : constant.EMPTY;
   return (
     `<article class="film-card">
         <h3 class="film-card__title">${title}</h3>
@@ -25,5 +28,24 @@ const createFilmCardTemplate = (filmCard) => {
   );
 };
 
+export default class FilmCard {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
 
-export {createFilmCardTemplate};
+  getTemplate() {
+    return createFilmCardTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = utils.createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
