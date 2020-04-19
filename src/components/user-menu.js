@@ -1,6 +1,6 @@
 import {collectStatisticsFilm} from "./statistics-menu.js";
 import {utils} from "../utils";
-import {constant} from "../constant.js";
+import {constants} from "../constants.js";
 
 const RatingRange = {
   NOVICE: {
@@ -20,9 +20,9 @@ const RatingRange = {
 };
 
 const getRank = (rating) => {
-  const isNovice = rating >= RatingRange.NOVICE.MIN && rating <= RatingRange.NOVICE.MAX ? RatingRange.NOVICE.NAME : constant.EMPTY;
-  const isFan = rating >= RatingRange.FAN.MIN && rating <= RatingRange.FAN.MAX ? RatingRange.FAN.NAME : constant.EMPTY;
-  const isMovieBuff = rating >= RatingRange.MOVIE_BUFF.MIN ? RatingRange.MOVIE_BUFF.NAME : constant.EMPTY;
+  const isNovice = rating >= RatingRange.NOVICE.MIN && rating <= RatingRange.NOVICE.MAX ? RatingRange.NOVICE.NAME : constants.EMPTY_SYMBOL;
+  const isFan = rating >= RatingRange.FAN.MIN && rating <= RatingRange.FAN.MAX ? RatingRange.FAN.NAME : constants.EMPTY_SYMBOL;
+  const isMovieBuff = rating >= RatingRange.MOVIE_BUFF.MIN ? RatingRange.MOVIE_BUFF.NAME : constants.EMPTY_SYMBOL;
   return isNovice || isFan || isMovieBuff;
 };
 

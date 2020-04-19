@@ -1,4 +1,4 @@
-import {constant} from "./constant.js";
+import {constants} from "./constants.js";
 
 const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
@@ -41,7 +41,7 @@ const getRandomData = () => {
 };
 
 const castTimeFormat = (data) => {
-  return `${data.getDate()} ${constant.months[data.getMonth()]} ${data.getFullYear()}`;
+  return `${data.getDate()} ${constants.months[data.getMonth()]} ${data.getFullYear()}`;
 };
 
 const getRandomMovieLength = () => {
@@ -58,6 +58,16 @@ const getRandomMovieLength = () => {
   const result = new Date();
   result.setHours(getRandomIntegerNumber(hoursRange.MIN, hoursRange.MAX), getRandomIntegerNumber(minuteRange.MIN, minuteRange.MAX));
   return `${result.getHours()}h ${result.getMinutes()}m`;
+};
+
+const generateRandomDateComment = () => {
+  const generateCustomData = (data) => {
+    return data < 10 ? `0${data}` : data;
+  };
+
+  const result = new Date();
+
+  return `${result.getFullYear()}/${generateCustomData(result.getMonth())}/${generateCustomData(result.getHours())}:${generateCustomData(result.getMinutes())}`;
 };
 
 const createElement = (template) => {
@@ -84,6 +94,7 @@ const utils = {
   getRandomFractionalNumber,
   getRandomArrayItem,
   getRandomData,
+  generateRandomDateComment,
   castTimeFormat,
   getRandomMovieLength,
   createElement,

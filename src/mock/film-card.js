@@ -1,43 +1,37 @@
 import {utils} from "../utils";
-import {constant} from "../constant.js";
+import {constants} from "../constants.js";
 
 const titles = [`Dracula`, `Evil Dead`, `Carrie`, ` King Kong`, `Re-Animator`, `Halloween`, `Alien`, `Black Christmas`];
 const genres = [`Western`, `Gangster`, `Detective`, `Drama`, `Historical`, `Comedy`, `Melodrama`];
 const descriptions = [`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`, `Cras aliquet varius magna, non porta ligula feugiat eget.`, `Fusce tristique felis at fermentum pharetra.`, `Aliquam id orci ut lectus varius viverra.`, `Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.`, `Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`, `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`, `Sed sed nisi sed augue convallis suscipit in sed felis.`, `Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus.`, `In rutrum ac purus sit amet tempus.`];
 const comments = descriptions.slice();
-const posterPaths = [
-  `./images/posters/made-for-each-other.png`,
-  `./images/posters/popeye-meets-sinbad.png`,
-  `./images/posters/sagebrush-trail.jpg`,
-  `./images/posters/santa-claus-conquers-the-martians.jpg`,
-  `./images/posters/the-dance-of-life.jpg`,
-  `./images/posters/the-great-flamarion.jpg`,
-  `./images/posters/the-man-with-the-golden-arm.jpg`,
-];
+const posterNames = [`made-for-each-other.png`, `popeye-meets-sinbad.png`, `sagebrush-trail.jpg`, `santa-claus-conquers-the-martians.jpg`, `the-dance-of-life.jpg`, `the-great-flamarion.jpg`, `the-man-with-the-golden-arm.jpg`];
 const directors = [`Martin Scorsese`, `Peter Jackson`, `Tim Burton`, `David Fincher`, `Christopher Nolan`, `Milos Forman`];
 const writers = [`Sally Rooney`, `Guy Gunaratne`, `David Chariandy`, `Jessie Greengrass`, `Eley Williams`];
 const authors = writers.slice();
 const actors = writers.slice();
 
+const generatePosterPaths = () => {
+  return posterNames.map((name) => {
+    return `${constants.POSTER_PATH}${name}`;
+  });
+};
+
 const getRandomArr = (arr, cound) => {
-  return new Array(cound).fill(``).map(() => utils.getRandomArrayItem(arr));
+  return new Array(cound).fill(constants.EMPTY_SYMBOL).map(() => utils.getRandomArrayItem(arr));
 };
 
 const generateCommentCard = () => {
   return {
-    emojiName: utils.getRandomArrayItem(constant.emojiNames),
+    emojiName: utils.getRandomArrayItem(constants.emojiNames),
     commentText: utils.getRandomArrayItem(comments),
     commentAuthor: utils.getRandomArrayItem(authors),
-    commentDay: `2019/12/31 23:59`,
+    commentDay: utils.generateRandomDateComment(),
   };
 };
 
 const generateCommentListCard = (count) => {
-  const result = [];
-  for (let i = 0; i < count; i++) {
-    result.push(generateCommentCard());
-  }
-  return result;
+  return new Array(count).fill(constants.EMPTY_SYMBOL).map(generateCommentCard);
 };
 
 const generateFilmCard = () => {
@@ -73,14 +67,14 @@ const generateFilmCard = () => {
   const movieLength = utils.getRandomMovieLength();
   return {
     comments: generateCommentListCard(randomCounterComment),
-    description: getRandomArr(descriptions, randomOfferCounter).join(` `),
+    description: getRandomArr(descriptions, randomOfferCounter).join(constants.SPACE_SYMBOL),
     duration: movieLength,
-    genre: getRandomArr(genres, randomQuantity).join(` `),
+    genre: getRandomArr(genres, randomQuantity).join(constants.SPACE_SYMBOL),
     isFavorite: utils.getRandomBoolean(),
     isWatched: utils.getRandomBoolean(),
     isWatchlist: utils.getRandomBoolean(),
     rating: utils.getRandomFractionalNumber(RatingRange.MIN, RatingRange.MAX),
-    src: utils.getRandomArrayItem(posterPaths),
+    src: utils.getRandomArrayItem(generatePosterPaths()),
     title: utils.getRandomArrayItem(titles),
     year: randomData.getFullYear(),
     originalTitle: utils.getRandomArrayItem(titles),
@@ -96,7 +90,7 @@ const generateFilmCard = () => {
       },
       {
         name: `Actor`,
-        value: getRandomArr(actors, randomQuantity).join(`, `),
+        value: getRandomArr(actors, randomQuantity).join(`${constants.COMMA_SYMBOL}${constants.SPACE_SYMBOL}`),
       },
       {
         name: `Release Date`,
@@ -119,7 +113,7 @@ const generateFilmCard = () => {
 };
 
 const generateFilmCards = (count) => {
-  return new Array(count).fill(``).map(generateFilmCard);
+  return new Array(count).fill(constants.EMPTY_SYMBOL).map(generateFilmCard);
 };
 
 export {generateFilmCards};

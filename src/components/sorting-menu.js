@@ -1,19 +1,16 @@
 import {utils} from "../utils";
-import {constant} from "../constant.js";
-
-const SORT_ITEM_DEFAULT_ACTIVE = 0;
-const sortItems = [`Sort by default`, `Sort by date`, `Sort by rating`];
+import {constants} from "../constants.js";
 
 const createSortItem = (text, isActive) => {
   return (`
-    <li><a href="#" class="sort__button ${isActive ? `sort__button--active` : constant.EMPTY}">${text}</a></li>
+    <li><a href="#" class="sort__button ${isActive ? constants.SORT_BUTTON_ACTIVE : constants.EMPTY_SYMBOL}">${text}</a></li>
   `);
 };
 
 const createSortingMenuTemplate = () => {
   return (
     `<ul class="sort">
-      ${sortItems.map((sort, i) => createSortItem(sort, i === SORT_ITEM_DEFAULT_ACTIVE)).join(constant.EMPTY)}
+      ${constants.sortItems.map((sort, i) => createSortItem(sort, i === constants.SORT_ITEM_DEFAULT_ACTIVE)).join(constants.EMPTY_SYMBOL)}
     </ul>`
   );
 };

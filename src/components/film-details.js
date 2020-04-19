@@ -1,10 +1,14 @@
-import {constant} from "../constant.js";
+import {constants} from "../constants.js";
 import {utils} from "../utils";
+
+const generateEmojiPath = (emojiName) => {
+  return `${constants.EMOJI_PATH}${emojiName}${constants.EMOJI_EXTENSION_FILE}`;
+};
 
 const createGenresMarkup = (genres) => {
   return genres.map((genre) => {
     return `<span class="film-details__genre">${genre}</span>`;
-  }).join(constant.EMPTY);
+  }).join(constants.EMPTY_SYMBOL);
 };
 
 const createDetailsRowMarkup = (row) => {
@@ -13,14 +17,14 @@ const createDetailsRowMarkup = (row) => {
   const isGenre = name === `Genre`;
   return (`
     <tr class="film-details__row">
-      <td class="film-details__term">${isOne && Array.isArray(value) ? name : `${name}s`}</td>
+      <td class="film-details__term">${isOne && Array.isArray(value) ? name : `${name}${constants.S_SYMBOL}`}</td>
       <td class="film-details__cell">${isGenre && !isOne ? createGenresMarkup(value) : value}</td>
     </tr>    
   `);
 };
 
 const createDetailsRowsMarkup = (rows) => {
-  return rows.map((row) => createDetailsRowMarkup(row)).join(``);
+  return rows.map((row) => createDetailsRowMarkup(row)).join(constants.EMPTY_SYMBOL);
 };
 
 
@@ -61,11 +65,10 @@ const createInfoMarkup = (card) => {
 
 const createFilmDetailsCommentMarkup = (comment) => {
   const {emojiName, commentText, commentAuthor, commentDay} = comment;
-  const srcEmoji = constant.EmojiNameToPathEmoji[emojiName];
   return (`
     <li class="film-details__comment">  
       <span class="film-details__comment-emoji">
-        <img src="${srcEmoji}" width="55" height="55" alt="emoji-${emojiName}">
+        <img src="${generateEmojiPath(emojiName)}" width="55" height="55" alt="emoji-${emojiName}">
       </span>
       <div>
         <p class="film-details__comment-text">${commentText}</p>
@@ -82,14 +85,40 @@ const createFilmDetailsCommentMarkup = (comment) => {
 const createFilmDetailsCommentListMarkup = (comments) => {
   return comments.map((comment) => {
     return createFilmDetailsCommentMarkup(comment);
-  }).join(``);
+  }).join(constants.EMPTY_SYMBOL);
+};
+
+const createFilmDetailsEmojiItemMarkup = (emojiName) => {
+  return (`
+    <input class="film-details__emoji-item visually-hidden" name="comment-${emojiName}" type="radio" id="emoji-${emojiName}" value="${emojiName}">
+    <label class="film-details__emoji-label" for="emoji-${emojiName}">
+      <img src="${generateEmojiPath(emojiName)}" width="30" height="30" alt="emoji">
+    </label>  
+  `);
+};
+
+const createFilmDetailsEmojiListMarkup = () => {
+  return constants.emojiNames.map((name) => createFilmDetailsEmojiItemMarkup(name)).join(constants.EMPTY_SYMBOL);
+};
+
+const filmDetailsControlMarkup = (name, text, isActive) => {
+  return (`
+    <input type="checkbox" class="film-details__control-input visually-hidden" id="${name}" name="${name}" ${isActive ? constants.CHECKED : constants.EMPTY_SYMBOL}> 
+    <label for="${name}" class="film-details__control-label film-details__control-label--${name}">${text}</label>    
+  `);
+};
+
+const filmDetailsControlListMarcup = (...isActive) => {
+  return new Array(constants.filmCardControls.length).fill(constants.EMPTY_SYMBOL).map((control, i) => {
+    return filmDetailsControlMarkup(constants.filmCardControls[i].name, constants.filmCardControls[i].labelText, isActive[i]);
+  }).join(constants.EMPTY_SYMBOL);
 };
 
 const createPopUpFilmDetailsTemplate = (filmCard) => {
   const {isWatchlist, isWatched, isFavorite} = filmCard;
-  const commentsCount = filmCard.comments.length;
   const infoMarkup = createInfoMarkup(filmCard);
   const filmDetailsCommentListMarkup = createFilmDetailsCommentListMarkup(filmCard.comments);
+  const filmDetailsEmojiListMarkup = createFilmDetailsEmojiListMarkup();
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -102,20 +131,13 @@ const createPopUpFilmDetailsTemplate = (filmCard) => {
           </div>
 
           <section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isWatchlist ? `checked` : constant.EMPTY}> 
-            <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched ? `checked` : constant.EMPTY}>
-            <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite ? `checked` : constant.EMPTY}>
-            <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
+            ${filmDetailsControlListMarcup(isWatchlist, isWatched, isFavorite)}
           </section>
         </div>
 
         <div class="form-details__bottom-container">
           <section class="film-details__comments-wrap">
-            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsCount}</span></h3>
+            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${ filmCard.comments.length}</span></h3>
 
             <ul class="film-details__comments-list">
               ${filmDetailsCommentListMarkup}
@@ -129,25 +151,7 @@ const createPopUpFilmDetailsTemplate = (filmCard) => {
               </label>
 
               <div class="film-details__emoji-list">
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile">
-                <label class="film-details__emoji-label" for="emoji-smile">
-                  <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
-                </label>                
-
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping">
-                <label class="film-details__emoji-label" for="emoji-sleeping">
-                  <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
-                </label>
-
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke">
-                <label class="film-details__emoji-label" for="emoji-puke">
-                  <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
-                </label>
-
-                <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry">
-                <label class="film-details__emoji-label" for="emoji-angry">
-                  <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
-                </label>
+                ${filmDetailsEmojiListMarkup}
               </div>
             </div>
           </section>
