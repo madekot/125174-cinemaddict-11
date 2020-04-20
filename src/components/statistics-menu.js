@@ -1,3 +1,5 @@
+import {utils} from "../utils";
+
 const collectStatisticsFilm = (arr) => {
   const CounterStatistic = {
     favorite: 0,
@@ -32,5 +34,27 @@ const createStatisticsMenuTemplate = (filmCards) => {
     </nav>`
   );
 };
+
+export default class StatisticsMenu {
+  constructor(filmCards) {
+    this._filmCards = filmCards;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createStatisticsMenuTemplate(this._filmCards);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = utils.createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
 
 export {createStatisticsMenuTemplate, collectStatisticsFilm};

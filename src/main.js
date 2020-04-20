@@ -1,82 +1,80 @@
-import {createUserMenuTemplate} from "./components/user-menu.js";
-import {createSortingMenuTemplate} from "./components/sorting-menu.js";
-import {createStatisticsMenuTemplate} from "./components/statistics-menu.js";
-import {createContentSiteTemplate} from "./components/content-site.js";
-import {createFilmCardTemplate} from "./components/film-card.js";
-import {createShowMoreButtonTemplate} from "./components/show-more-button.js";
-import {createPopUpFilmDetailsTemplate} from "./components/pop-up-film.js";
+import {utils} from "./utils";
+import {constants} from "./constants.js";
+import UserMenuComponet from "./components/user-menu.js";
+import StatisticsMenuComponent from "./components/statistics-menu.js";
+import SortingMenuComponent from "./components/sorting-menu.js";
+import FilmCardComponent from "./components/film-card.js";
+import FilmDetailsComponent from "./components/film-details.js";
+import FilmsComponent from "./components/films.js";
+import FilmListItemComponent from "./components/films-list.js";
+import ShowMoreButtonComponent from "./components/show-more-button.js";
 import {generateFilmCards} from "./mock/film-card.js";
 
-const CARD_COUNT = 20;
-const SHOWING_CARDS_COUNT_ON_START = 5;
-const SHOWING_CARDS_COUNT_BY_BUTTON = 5;
-
-
-let showingCardsCount = SHOWING_CARDS_COUNT_ON_START;
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
-const filmCards = generateFilmCards(CARD_COUNT);
-
-const render = ({container, template, place = `beforeend`}) => {
-  container.insertAdjacentHTML(place, template);
-};
-
-const findElement = (parrent, selector) => {
-  return parrent.querySelector(selector);
-};
-
-const renderFilmCards = (from, to) => {
-  const filmCardWrapperElement = siteMainElement.querySelector(`.films-list .films-list__container`);
-  filmCards.slice(from, to).forEach((card) => render({container: filmCardWrapperElement, template: createFilmCardTemplate(card)}));
-};
-
-const renderShowMoreButton = (cb) => {
-  const filmsListElement = siteMainElement.querySelector(`.films-list`);
-  render({container: filmsListElement, template: createShowMoreButtonTemplate()});
-  cb();
-};
-
-const onClickShowMoreButton = () => {
-  const prevCardsCount = showingCardsCount;
-  showingCardsCount = showingCardsCount + SHOWING_CARDS_COUNT_BY_BUTTON;
-  renderFilmCards(prevCardsCount, showingCardsCount);
-  if (showingCardsCount >= filmCards.length) {
-    const buttonElement = findElement(siteMainElement, `.films-list__show-more`);
-    buttonElement.remove();
-  }
-};
-
-const addListenerShowMoreButton = () => {
-  const buttonElement = findElement(siteMainElement, `.films-list__show-more`);
-  buttonElement.addEventListener(`click`, onClickShowMoreButton);
-};
-
-const hidePopUpFilmDetails = () => {
-  const filmDetailsElement = document.querySelector(`.film-details`);
-  filmDetailsElement.classList.add(`visually-hidden`);
-};
+const filmCards = generateFilmCards(constants.CARD_COUNT);
 
 const addCounterMoviesDatabase = (length) => {
-  // const CounterRangeDatabase = {
-  //   MIN: 20,
-  //   MAX: 200,
-  // };
   const statistics = siteFooterElement.querySelector(`.footer__statistics`);
   statistics.textContent = length;
 };
 
-render({container: siteHeaderElement, template: createUserMenuTemplate(filmCards)});
-render({container: siteMainElement, template: createStatisticsMenuTemplate(filmCards)});
-render({container: siteMainElement, template: createSortingMenuTemplate()});
-render({container: siteMainElement, template: createContentSiteTemplate()});
+const renderCards = (cardListContainerElement, card) => {
+  const onClickCard = () => {
+    utils.render(document.body, filmDetails.getElement());
+  };
 
-render({container: document.body, template: createPopUpFilmDetailsTemplate(filmCards[0])});
-renderFilmCards(0, SHOWING_CARDS_COUNT_ON_START);
-renderShowMoreButton(addListenerShowMoreButton);
+  const onFilmDetailsButtonClose = () => {
+    document.body.removeChild(filmDetails.getElement());
+  };
+
+  const cardComponent = new FilmCardComponent(card);
+  const cardElement = cardComponent.getElement();
+
+  cardElement.addEventListener(`click`, onClickCard);
+
+  const filmDetails = new FilmDetailsComponent(card);
+  const filmDetailsButtonCloseElement = filmDetails.getElement().querySelector(`.film-details__close-btn`);
+  filmDetailsButtonCloseElement.addEventListener(`click`, onFilmDetailsButtonClose);
+
+  utils.render(cardListContainerElement, cardComponent.getElement());
+};
+
+utils.render(siteHeaderElement, new UserMenuComponet(filmCards).getElement());
+utils.render(siteMainElement, new StatisticsMenuComponent(filmCards).getElement());
+utils.render(siteMainElement, new SortingMenuComponent().getElement());
+
+
+const renderFilms = (filmsComponent, cards) => {
+  const renderFilmCards = (from, to) => {
+    cards.slice(from, to).forEach((card) => renderCards(cardListContainerElement, card));
+  };
+
+  const filmListItemComponent = new FilmListItemComponent();
+  const cardListContainerElement = filmListItemComponent.getElement().querySelector(`.films-list__container`);
+
+  renderFilmCards(0, constants.SHOWING_CARDS_COUNT_ON_START);
+
+  if (constants.CARD_COUNT > constants.SHOWING_CARDS_COUNT_ON_START) {
+    const showMoreButtonComponent = new ShowMoreButtonComponent();
+    utils.render(filmListItemComponent.getElement(), showMoreButtonComponent.getElement());
+
+    showMoreButtonComponent.getElement().addEventListener(`click`, () => {
+      renderFilmCards(cardListContainerElement.children.length, cardListContainerElement.children.length + constants.SHOWING_CARDS_COUNT_BY_BUTTON);
+      if (cardListContainerElement.children.length >= cards.length) {
+        filmListItemComponent.getElement().removeChild(showMoreButtonComponent.getElement());
+        showMoreButtonComponent.removeElement();
+      }
+    });
+  }
+
+  utils.render(filmsComponent.getElement(), filmListItemComponent.getElement());
+};
+
+const filmsComponent = new FilmsComponent();
+utils.render(siteMainElement, filmsComponent.getElement());
+renderFilms(filmsComponent, filmCards);
 addCounterMoviesDatabase(filmCards.length);
-hidePopUpFilmDetails();
-
-

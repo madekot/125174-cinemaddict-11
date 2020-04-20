@@ -1,4 +1,7 @@
 import {collectStatisticsFilm} from "./statistics-menu.js";
+import {utils} from "../utils";
+import {constants} from "../constants.js";
+
 const RatingRange = {
   NOVICE: {
     NAME: `novice`,
@@ -17,9 +20,9 @@ const RatingRange = {
 };
 
 const getRank = (rating) => {
-  const isNovice = rating >= RatingRange.NOVICE.MIN && rating <= RatingRange.NOVICE.MAX ? RatingRange.NOVICE.NAME : ``;
-  const isFan = rating >= RatingRange.FAN.MIN && rating <= RatingRange.FAN.MAX ? RatingRange.FAN.NAME : ``;
-  const isMovieBuff = rating >= RatingRange.MOVIE_BUFF.MIN ? RatingRange.MOVIE_BUFF.NAME : ``;
+  const isNovice = rating >= RatingRange.NOVICE.MIN && rating <= RatingRange.NOVICE.MAX ? RatingRange.NOVICE.NAME : constants.EMPTY_SYMBOL;
+  const isFan = rating >= RatingRange.FAN.MIN && rating <= RatingRange.FAN.MAX ? RatingRange.FAN.NAME : constants.EMPTY_SYMBOL;
+  const isMovieBuff = rating >= RatingRange.MOVIE_BUFF.MIN ? RatingRange.MOVIE_BUFF.NAME : constants.EMPTY_SYMBOL;
   return isNovice || isFan || isMovieBuff;
 };
 
@@ -35,4 +38,24 @@ const createUserMenuTemplate = (filmCards) => {
   );
 };
 
-export {createUserMenuTemplate};
+export default class UserMenu {
+  constructor(filmCards) {
+    this._filmCards = filmCards;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createUserMenuTemplate(this._filmCards);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = utils.createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

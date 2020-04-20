@@ -1,4 +1,9 @@
-import {constant} from "./constant.js";
+import {constants} from "./constants.js";
+
+const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
 
 const getRandomIntegerNumber = (min, max) => {
   return Math.floor(min + Math.random() * (max + 1 - min));
@@ -36,7 +41,7 @@ const getRandomData = () => {
 };
 
 const castTimeFormat = (data) => {
-  return `${data.getDate()} ${constant.months[data.getMonth()]} ${data.getFullYear()}`;
+  return `${data.getDate()} ${constants.months[data.getMonth()]} ${data.getFullYear()}`;
 };
 
 const getRandomMovieLength = () => {
@@ -55,6 +60,33 @@ const getRandomMovieLength = () => {
   return `${result.getHours()}h ${result.getMinutes()}m`;
 };
 
+const generateRandomDateComment = () => {
+  const generateCustomData = (data) => {
+    return data < 10 ? `0${data}` : data;
+  };
+
+  const result = new Date();
+
+  return `${result.getFullYear()}/${generateCustomData(result.getMonth())}/${generateCustomData(result.getHours())}:${generateCustomData(result.getMinutes())}`;
+};
+
+const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};
+
+const render = (container, element, place = RenderPosition.BEFOREEND) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
 
 const utils = {
   getRandomBoolean,
@@ -62,8 +94,12 @@ const utils = {
   getRandomFractionalNumber,
   getRandomArrayItem,
   getRandomData,
+  generateRandomDateComment,
   castTimeFormat,
   getRandomMovieLength,
+  createElement,
+  RenderPosition,
+  render,
 };
 
 export {utils};
