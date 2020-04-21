@@ -30,16 +30,13 @@ const renderCards = (cardListContainerElement, card) => {
     remove(filmDetailsComponent);
   };
 
-  const cardComponent = new FilmCardComponent(card);
-  const cardElement = cardComponent.getElement();
-
-  cardElement.addEventListener(`click`, onClickCard);
+  const filmCardComponent = new FilmCardComponent(card);
+  filmCardComponent.setOnClick(onClickCard);
 
   const filmDetailsComponent = new FilmDetailsComponent(card);
-  const filmDetailsButtonCloseElement = filmDetailsComponent.getElement().querySelector(`.film-details__close-btn`);
-  filmDetailsButtonCloseElement.addEventListener(`click`, onFilmDetailsButtonClose);
+  filmDetailsComponent.setOnButtonCloseClick(onFilmDetailsButtonClose);
 
-  render(cardListContainerElement, cardComponent);
+  render(cardListContainerElement, filmCardComponent);
 };
 
 render(siteHeaderElement, new UserMenuComponet(mockCards));
