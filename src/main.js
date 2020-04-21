@@ -24,11 +24,11 @@ const addCounterMoviesDatabase = (length) => {
 
 const renderCards = (cardListContainerElement, card) => {
   const onClickCard = () => {
-    utils.render(document.body, filmDetails.getElement());
+    utils.render(document.body, filmDetailsComponent.getElement());
   };
 
   const onFilmDetailsButtonClose = () => {
-    document.body.removeChild(filmDetails.getElement());
+    document.body.removeChild(filmDetailsComponent.getElement());
   };
 
   const cardComponent = new FilmCardComponent(card);
@@ -36,8 +36,8 @@ const renderCards = (cardListContainerElement, card) => {
 
   cardElement.addEventListener(`click`, onClickCard);
 
-  const filmDetails = new FilmDetailsComponent(card);
-  const filmDetailsButtonCloseElement = filmDetails.getElement().querySelector(`.film-details__close-btn`);
+  const filmDetailsComponent = new FilmDetailsComponent(card);
+  const filmDetailsButtonCloseElement = filmDetailsComponent.getElement().querySelector(`.film-details__close-btn`);
   filmDetailsButtonCloseElement.addEventListener(`click`, onFilmDetailsButtonClose);
 
   utils.render(cardListContainerElement, cardComponent.getElement());

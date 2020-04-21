@@ -108,7 +108,7 @@ const filmDetailsControlMarkup = (name, text, isActive) => {
   `);
 };
 
-const filmDetailsControlListMarcup = (...isActive) => {
+const filmDetailsControlListMarkup = (...isActive) => {
   return new Array(constants.filmCardControls.length).fill(constants.EMPTY_SYMBOL).map((control, i) => {
     return filmDetailsControlMarkup(constants.filmCardControls[i].name, constants.filmCardControls[i].labelText, isActive[i]);
   }).join(constants.EMPTY_SYMBOL);
@@ -131,7 +131,7 @@ const createPopUpFilmDetailsTemplate = (filmCard) => {
           </div>
 
           <section class="film-details__controls">
-            ${filmDetailsControlListMarcup(isWatchlist, isWatched, isFavorite)}
+            ${filmDetailsControlListMarkup(isWatchlist, isWatched, isFavorite)}
           </section>
         </div>
 
