@@ -112,8 +112,8 @@ const generateFilmCard = () => {
   };
 };
 
-const generateFilmCards = (count) => {
+const generateMockCards = (count) => {
   return new Array(count).fill(constants.EMPTY_SYMBOL).map(generateFilmCard);
 };
 
-export {generateFilmCards};
+export {generateMockCards};

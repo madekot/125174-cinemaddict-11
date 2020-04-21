@@ -1,5 +1,4 @@
-import {render} from "./utils/render";
-import {utils} from "./utils/utils";
+import {render, remove} from "./utils/render";
 import {constants} from "./constants.js";
 import UserMenuComponet from "./components/user-menu.js";
 import StatisticsMenuComponent from "./components/statistics-menu.js";
@@ -9,13 +8,13 @@ import FilmDetailsComponent from "./components/film-details.js";
 import FilmsComponent from "./components/films.js";
 import FilmListItemComponent from "./components/films-list.js";
 import ShowMoreButtonComponent from "./components/show-more-button.js";
-import {generateFilmCards} from "./mock/film-card.js";
+import {generateMockCards} from "./mock/film-card.js";
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);
 
-const filmCards = generateFilmCards(constants.CARD_COUNT);
+const mockCards = generateMockCards(constants.CARD_COUNT);
 
 const addCounterMoviesDatabase = (length) => {
   const statistics = siteFooterElement.querySelector(`.footer__statistics`);
@@ -24,11 +23,11 @@ const addCounterMoviesDatabase = (length) => {
 
 const renderCards = (cardListContainerElement, card) => {
   const onClickCard = () => {
-    render(document.body, filmDetailsComponent.getElement());
+    render(document.body, filmDetailsComponent);
   };
 
   const onFilmDetailsButtonClose = () => {
-    document.body.removeChild(filmDetailsComponent.getElement());
+    remove(filmDetailsComponent);
   };
 
   const cardComponent = new FilmCardComponent(card);
@@ -40,12 +39,12 @@ const renderCards = (cardListContainerElement, card) => {
   const filmDetailsButtonCloseElement = filmDetailsComponent.getElement().querySelector(`.film-details__close-btn`);
   filmDetailsButtonCloseElement.addEventListener(`click`, onFilmDetailsButtonClose);
 
-  render(cardListContainerElement, cardComponent.getElement());
+  render(cardListContainerElement, cardComponent);
 };
 
-render(siteHeaderElement, new UserMenuComponet(filmCards).getElement());
-render(siteMainElement, new StatisticsMenuComponent(filmCards).getElement());
-render(siteMainElement, new SortingMenuComponent().getElement());
+render(siteHeaderElement, new UserMenuComponet(mockCards));
+render(siteMainElement, new StatisticsMenuComponent(mockCards));
+render(siteMainElement, new SortingMenuComponent());
 
 
 const renderFilms = (filmsComponent, cards) => {
@@ -60,21 +59,20 @@ const renderFilms = (filmsComponent, cards) => {
 
   if (constants.CARD_COUNT > constants.SHOWING_CARDS_COUNT_ON_START) {
     const showMoreButtonComponent = new ShowMoreButtonComponent();
-    render(filmListItemComponent.getElement(), showMoreButtonComponent.getElement());
+    render(filmListItemComponent.getElement(), showMoreButtonComponent);
 
     showMoreButtonComponent.getElement().addEventListener(`click`, () => {
       renderFilmCards(cardListContainerElement.children.length, cardListContainerElement.children.length + constants.SHOWING_CARDS_COUNT_BY_BUTTON);
       if (cardListContainerElement.children.length >= cards.length) {
-        filmListItemComponent.getElement().removeChild(showMoreButtonComponent.getElement());
-        showMoreButtonComponent.removeElement();
+        remove(showMoreButtonComponent);
       }
     });
   }
 
-  render(filmsComponent.getElement(), filmListItemComponent.getElement());
+  render(filmsComponent.getElement(), filmListItemComponent);
 };
 
 const filmsComponent = new FilmsComponent();
-render(siteMainElement, filmsComponent.getElement());
-renderFilms(filmsComponent, filmCards);
-addCounterMoviesDatabase(filmCards.length);
+render(siteMainElement, filmsComponent);
+renderFilms(filmsComponent, mockCards);
+addCounterMoviesDatabase(mockCards.length);
