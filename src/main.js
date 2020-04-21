@@ -10,7 +10,6 @@ import FilmListItemComponent from "./components/films-list.js";
 import ShowMoreButtonComponent from "./components/show-more-button.js";
 import {generateFilmCards} from "./mock/film-card.js";
 
-
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 const siteFooterElement = document.querySelector(`.footer`);

@@ -70,7 +70,7 @@ const generateRandomDateComment = () => {
   return `${result.getFullYear()}/${generateCustomData(result.getMonth())}/${generateCustomData(result.getHours())}:${generateCustomData(result.getMinutes())}`;
 };
 
-const createElement = (template) => {
+export const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
   return newElement.firstChild;

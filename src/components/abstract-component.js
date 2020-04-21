@@ -1,4 +1,4 @@
-import {createElement} from "../../../125174-taskmanager-11/src/utils/render";
+import {createElement} from "../utils";
 
 export default class AbstractComponent {
   constructor() {
@@ -17,6 +17,8 @@ export default class AbstractComponent {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }
+
+    return this._element;
   }
 
   removeElement() {

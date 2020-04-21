@@ -1,5 +1,5 @@
+import AbstractComponent from "./abstract-component";
 import {collectStatisticsFilm} from "./statistics-menu.js";
-import {utils} from "../utils";
 import {constants} from "../constants.js";
 
 const RatingRange = {
@@ -38,24 +38,13 @@ const createUserMenuTemplate = (filmCards) => {
   );
 };
 
-export default class UserMenu {
+export default class UserMenu extends AbstractComponent {
   constructor(filmCards) {
+    super();
     this._filmCards = filmCards;
-    this._element = null;
   }
 
   getTemplate() {
     return createUserMenuTemplate(this._filmCards);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = utils.createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

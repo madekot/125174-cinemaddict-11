@@ -1,5 +1,5 @@
+import AbstractComponent from "./abstract-component";
 import {constants} from "../constants.js";
-import {utils} from "../utils";
 
 const generateEmojiPath = (emojiName) => {
   return `${constants.EMOJI_PATH}${emojiName}${constants.EMOJI_EXTENSION_FILE}`;
@@ -161,24 +161,13 @@ const createPopUpFilmDetailsTemplate = (filmCard) => {
   );
 };
 
-export default class FilmDetails {
+export default class FilmDetails extends AbstractComponent {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
   }
 
   getTemplate() {
     return createPopUpFilmDetailsTemplate(this._card);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = utils.createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

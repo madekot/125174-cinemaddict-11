@@ -1,4 +1,4 @@
-import {utils} from "../utils";
+import AbstractComponent from "./abstract-component";
 import {constants} from "../constants";
 
 const createFilmCardControlItemMarcup = (nameClassModifier, text, isActive) => {
@@ -32,24 +32,13 @@ const createFilmCardTemplate = (filmCard) => {
   );
 };
 
-export default class FilmCard {
+export default class FilmCard extends AbstractComponent {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmCardTemplate(this._card);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = utils.createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
