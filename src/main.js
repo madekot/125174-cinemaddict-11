@@ -5,7 +5,7 @@ import StatisticsMenuComponent from "./components/statistics-menu.js";
 import SortingMenuComponent from "./components/sorting-menu.js";
 import FilmsComponent from "./components/films.js";
 import {generateMockCards} from "./mock/film-card.js";
-import PageController from "./controllers/PageController ";
+import PageController from "./controllers/PageController";
 
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
