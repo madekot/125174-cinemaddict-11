@@ -1,4 +1,4 @@
-import {utils} from "../utils";
+import {utils} from "../utils/utils";
 import {constants} from "../constants.js";
 
 const titles = [`Dracula`, `Evil Dead`, `Carrie`, ` King Kong`, `Re-Animator`, `Halloween`, `Alien`, `Black Christmas`];

@@ -1,4 +1,5 @@
-import {utils} from "./utils";
+import {render} from "./utils/render";
+import {utils} from "./utils/utils";
 import {constants} from "./constants.js";
 import UserMenuComponet from "./components/user-menu.js";
 import StatisticsMenuComponent from "./components/statistics-menu.js";
@@ -23,7 +24,7 @@ const addCounterMoviesDatabase = (length) => {
 
 const renderCards = (cardListContainerElement, card) => {
   const onClickCard = () => {
-    utils.render(document.body, filmDetailsComponent.getElement());
+    render(document.body, filmDetailsComponent.getElement());
   };
 
   const onFilmDetailsButtonClose = () => {
@@ -39,12 +40,12 @@ const renderCards = (cardListContainerElement, card) => {
   const filmDetailsButtonCloseElement = filmDetailsComponent.getElement().querySelector(`.film-details__close-btn`);
   filmDetailsButtonCloseElement.addEventListener(`click`, onFilmDetailsButtonClose);
 
-  utils.render(cardListContainerElement, cardComponent.getElement());
+  render(cardListContainerElement, cardComponent.getElement());
 };
 
-utils.render(siteHeaderElement, new UserMenuComponet(filmCards).getElement());
-utils.render(siteMainElement, new StatisticsMenuComponent(filmCards).getElement());
-utils.render(siteMainElement, new SortingMenuComponent().getElement());
+render(siteHeaderElement, new UserMenuComponet(filmCards).getElement());
+render(siteMainElement, new StatisticsMenuComponent(filmCards).getElement());
+render(siteMainElement, new SortingMenuComponent().getElement());
 
 
 const renderFilms = (filmsComponent, cards) => {
@@ -59,7 +60,7 @@ const renderFilms = (filmsComponent, cards) => {
 
   if (constants.CARD_COUNT > constants.SHOWING_CARDS_COUNT_ON_START) {
     const showMoreButtonComponent = new ShowMoreButtonComponent();
-    utils.render(filmListItemComponent.getElement(), showMoreButtonComponent.getElement());
+    render(filmListItemComponent.getElement(), showMoreButtonComponent.getElement());
 
     showMoreButtonComponent.getElement().addEventListener(`click`, () => {
       renderFilmCards(cardListContainerElement.children.length, cardListContainerElement.children.length + constants.SHOWING_CARDS_COUNT_BY_BUTTON);
@@ -70,10 +71,10 @@ const renderFilms = (filmsComponent, cards) => {
     });
   }
 
-  utils.render(filmsComponent.getElement(), filmListItemComponent.getElement());
+  render(filmsComponent.getElement(), filmListItemComponent.getElement());
 };
 
 const filmsComponent = new FilmsComponent();
-utils.render(siteMainElement, filmsComponent.getElement());
+render(siteMainElement, filmsComponent.getElement());
 renderFilms(filmsComponent, filmCards);
 addCounterMoviesDatabase(filmCards.length);
