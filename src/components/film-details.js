@@ -1,5 +1,5 @@
+import AbstractComponent from "./abstract-component";
 import {constants} from "../constants.js";
-import {utils} from "../utils";
 
 const generateEmojiPath = (emojiName) => {
   return `${constants.EMOJI_PATH}${emojiName}${constants.EMOJI_EXTENSION_FILE}`;
@@ -108,7 +108,7 @@ const filmDetailsControlMarkup = (name, text, isActive) => {
   `);
 };
 
-const filmDetailsControlListMarcup = (...isActive) => {
+const filmDetailsControlListMarkup = (...isActive) => {
   return new Array(constants.filmCardControls.length).fill(constants.EMPTY_SYMBOL).map((control, i) => {
     return filmDetailsControlMarkup(constants.filmCardControls[i].name, constants.filmCardControls[i].labelText, isActive[i]);
   }).join(constants.EMPTY_SYMBOL);
@@ -131,7 +131,7 @@ const createPopUpFilmDetailsTemplate = (filmCard) => {
           </div>
 
           <section class="film-details__controls">
-            ${filmDetailsControlListMarcup(isWatchlist, isWatched, isFavorite)}
+            ${filmDetailsControlListMarkup(isWatchlist, isWatched, isFavorite)}
           </section>
         </div>
 
@@ -161,24 +161,18 @@ const createPopUpFilmDetailsTemplate = (filmCard) => {
   );
 };
 
-export default class FilmDetails {
+export default class FilmDetails extends AbstractComponent {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
   }
 
   getTemplate() {
     return createPopUpFilmDetailsTemplate(this._card);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = utils.createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setOnButtonCloseClick(handler) {
+    this.getElement().querySelector(`.film-details__close-btn`)
+      .addEventListener(`click`, handler);
   }
 }

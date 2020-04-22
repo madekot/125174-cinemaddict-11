@@ -1,4 +1,4 @@
-import {utils} from "../utils";
+import AbstractComponent from "./abstract-component";
 
 const collectStatisticsFilm = (arr) => {
   const CounterStatistic = {
@@ -35,25 +35,14 @@ const createStatisticsMenuTemplate = (filmCards) => {
   );
 };
 
-export default class StatisticsMenu {
+export default class StatisticsMenu extends AbstractComponent {
   constructor(filmCards) {
+    super();
     this._filmCards = filmCards;
-    this._element = null;
   }
 
   getTemplate() {
     return createStatisticsMenuTemplate(this._filmCards);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = utils.createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

@@ -1,4 +1,4 @@
-import {utils} from "../utils";
+import {utils} from "../utils/utils";
 import {constants} from "../constants.js";
 
 const titles = [`Dracula`, `Evil Dead`, `Carrie`, ` King Kong`, `Re-Animator`, `Halloween`, `Alien`, `Black Christmas`];
@@ -112,8 +112,8 @@ const generateFilmCard = () => {
   };
 };
 
-const generateFilmCards = (count) => {
+const generateMockCards = (count) => {
   return new Array(count).fill(constants.EMPTY_SYMBOL).map(generateFilmCard);
 };
 
-export {generateFilmCards};
+export {generateMockCards};

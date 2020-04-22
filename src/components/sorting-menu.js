@@ -1,4 +1,4 @@
-import {utils} from "../utils";
+import AbstractComponent from "./abstract-component";
 import {constants} from "../constants.js";
 
 const createSortItem = (text, isActive) => {
@@ -15,23 +15,8 @@ const createSortingMenuTemplate = () => {
   );
 };
 
-export default class SortingMenu {
-  constructor() {
-    this._element = null;
-  }
-
+export default class SortingMenu extends AbstractComponent {
   getTemplate() {
     return createSortingMenuTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = utils.createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
