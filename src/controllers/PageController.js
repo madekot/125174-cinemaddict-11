@@ -28,6 +28,7 @@ export default class PageController {
     this._container = container;
 
     this._filmListItemComponent = new FilmListItemComponent();
+    this._showMoreButtonComponent = new ShowMoreButtonComponent();
   }
 
   render(cards) {
@@ -41,13 +42,12 @@ export default class PageController {
     renderFilmCards(0, constants.SHOWING_CARDS_COUNT_ON_START);
 
     if (constants.CARD_COUNT > constants.SHOWING_CARDS_COUNT_ON_START) {
-      const showMoreButtonComponent = new ShowMoreButtonComponent();
-      render(this._filmListItemComponent.getElement(), showMoreButtonComponent);
+      render(this._filmListItemComponent.getElement(), this._showMoreButtonComponent);
 
-      showMoreButtonComponent.setOnClick(() => {
+      this._showMoreButtonComponent.setOnClick(() => {
         renderFilmCards(cardListContainerElement.children.length, cardListContainerElement.children.length + constants.SHOWING_CARDS_COUNT_BY_BUTTON);
         if (cardListContainerElement.children.length >= cards.length) {
-          remove(showMoreButtonComponent);
+          remove(this._showMoreButtonComponent);
         }
       });
     }
