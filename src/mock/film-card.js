@@ -23,7 +23,7 @@ const getRandomArr = (arr, cound) => {
 
 const generateCommentCard = () => {
   return {
-    emojiName: utils.getRandomArrayItem(constants.emojiNames),
+    emojiName: utils.getRandomArrayItem(constants.EMOJI_NAMES),
     commentText: utils.getRandomArrayItem(comments),
     commentAuthor: utils.getRandomArrayItem(authors),
     commentDay: utils.generateRandomDateComment(),

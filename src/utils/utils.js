@@ -36,7 +36,7 @@ const getRandomData = () => {
 };
 
 const castTimeFormat = (data) => {
-  return `${data.getDate()} ${constants.months[data.getMonth()]} ${data.getFullYear()}`;
+  return `${data.getDate()} ${constants.MONTHS[data.getMonth()]} ${data.getFullYear()}`;
 };
 
 const getRandomMovieLength = () => {

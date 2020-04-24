@@ -98,19 +98,19 @@ const createFilmDetailsEmojiItemMarkup = (emojiName) => {
 };
 
 const createFilmDetailsEmojiListMarkup = () => {
-  return constants.emojiNames.map((name) => createFilmDetailsEmojiItemMarkup(name)).join(constants.EMPTY_SYMBOL);
+  return constants.EMOJI_NAMES.map((name) => createFilmDetailsEmojiItemMarkup(name)).join(constants.EMPTY_SYMBOL);
 };
 
 const filmDetailsControlMarkup = (name, text, isActive) => {
   return (`
-    <input type="checkbox" class="film-details__control-input visually-hidden" id="${name}" name="${name}" ${isActive ? constants.CHECKED : constants.EMPTY_SYMBOL}> 
+    <input type="checkbox" class="film-details__control-input visually-hidden" id="${name}" name="${name}" ${isActive ? constants.CHECKED_ATTRIBUTE : constants.EMPTY_SYMBOL}> 
     <label for="${name}" class="film-details__control-label film-details__control-label--${name}">${text}</label>    
   `);
 };
 
 const filmDetailsControlListMarkup = (...isActive) => {
-  return new Array(constants.filmCardControls.length).fill(constants.EMPTY_SYMBOL).map((control, i) => {
-    return filmDetailsControlMarkup(constants.filmCardControls[i].name, constants.filmCardControls[i].labelText, isActive[i]);
+  return new Array(constants.FILM_CARD_CONTROLS.length).fill(constants.EMPTY_SYMBOL).map((control, i) => {
+    return filmDetailsControlMarkup(constants.FILM_CARD_CONTROLS[i].name, constants.FILM_CARD_CONTROLS[i].labelText, isActive[i]);
   }).join(constants.EMPTY_SYMBOL);
 };
 

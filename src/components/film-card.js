@@ -2,12 +2,12 @@ import AbstractComponent from "./abstract-component";
 import {constants} from "../constants";
 
 const createFilmCardControlItemMarcup = (nameClassModifier, text, isActive) => {
-  return `<button class="film-card__controls-item button film-card__controls-item--${nameClassModifier} ${isActive ? constants.FILM_CARD_BUTTON_ACTIVE : constants.EMPTY_SYMBOL}">${text}</button>`;
+  return `<button class="film-card__controls-item button film-card__controls-item--${nameClassModifier} ${isActive ? constants.FILM_CARD_BUTTON_ACTIVE_CLASS : constants.EMPTY_SYMBOL}">${text}</button>`;
 };
 
 const createFilmCardControlsListMarcup = (...isActive) => {
-  return new Array(constants.filmCardControls.length).fill(constants.EMPTY_SYMBOL).map((control, i) => {
-    return createFilmCardControlItemMarcup(constants.filmCardControls[i].claccName, constants.filmCardControls[i].buttonText, isActive[i]);
+  return new Array(constants.FILM_CARD_CONTROLS.length).fill(constants.EMPTY_SYMBOL).map((control, i) => {
+    return createFilmCardControlItemMarcup(constants.FILM_CARD_CONTROLS[i].claccName, constants.FILM_CARD_CONTROLS[i].buttonText, isActive[i]);
   }).join(constants.EMPTY_SYMBOL);
 };
 

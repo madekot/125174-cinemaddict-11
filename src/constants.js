@@ -6,15 +6,15 @@ const EMPTY_SYMBOL = ``;
 const SPACE_SYMBOL = ` `;
 const COMMA_SYMBOL = `,`;
 const S_SYMBOL = `s`;
-const CHECKED = `checked`;
+const CHECKED_ATTRIBUTE = `checked`;
 
-const FILM_CARD_BUTTON_ACTIVE = `film-card__controls-item--active`;
-const SORT_BUTTON_ACTIVE = `sort__button--active`;
+const FILM_CARD_BUTTON_ACTIVE_CLASS = `film-card__controls-item--active`;
+const SORT_BUTTON_ACTIVE_CLASS = `sort__button--active`;
 
 const SORT_ITEM_DEFAULT_ACTIVE = 0;
-const sortItems = [`Sort by default`, `Sort by date`, `Sort by rating`];
+const SORT_ITEMS = [`Sort by default`, `Sort by date`, `Sort by rating`];
 
-const filmCardControls = [
+const FILM_CARD_CONTROLS = [
   {
     name: `watchlist`,
     claccName: `add-to-watchlist`,
@@ -35,9 +35,9 @@ const filmCardControls = [
   },
 ];
 
-const emojiNames = [`angry`, `puke`, `sleeping`, `smile`];
+const EMOJI_NAMES = [`angry`, `puke`, `sleeping`, `smile`];
 
-const months = [
+const MONTHS = [
   `January`,
   `February`,
   `March`,
@@ -58,17 +58,17 @@ const EMOJI_EXTENSION_FILE = `.png`;
 const POSTER_PATH = `./images/posters/`;
 
 const constants = {
-  emojiNames,
-  months,
-  sortItems,
-  filmCardControls,
+  EMOJI_NAMES,
+  MONTHS,
+  SORT_ITEMS,
+  FILM_CARD_CONTROLS,
   EMPTY_SYMBOL,
   SPACE_SYMBOL,
   COMMA_SYMBOL,
   S_SYMBOL,
-  CHECKED,
-  FILM_CARD_BUTTON_ACTIVE,
-  SORT_BUTTON_ACTIVE,
+  CHECKED_ATTRIBUTE,
+  FILM_CARD_BUTTON_ACTIVE_CLASS,
+  SORT_BUTTON_ACTIVE_CLASS,
   SORT_ITEM_DEFAULT_ACTIVE,
   EMOJI_PATH,
   EMOJI_EXTENSION_FILE,
