@@ -26,6 +26,21 @@ export default class MovieController {
       remove(this._filmDetailsComponent);
     });
 
+    this._filmCardComponent.setOnAddWatchlistButtonClick((evt) => {
+      evt.preventDefault();
+      console.log(`click_1`);
+    });
+
+    this._filmCardComponent.setOnMarkWatchedButtonClick((evt) => {
+      evt.preventDefault();
+      console.log(`click_2`);
+    });
+
+    this._filmCardComponent.setOnFavoriteButtonClick((evt) => {
+      evt.preventDefault();
+      console.log(`click_3`);
+    });
+
     render(this._container, this._filmCardComponent);
   }
 
