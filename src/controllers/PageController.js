@@ -5,35 +5,6 @@ import FilmListItemComponent from "../components/films-list";
 import {constants} from "../constants";
 import ShowMoreButtonComponent from "../components/show-more-button";
 
-const renderCard = (cardContainerElement, card) => {
-
-  const onCardClick = () => {
-    render(document.body, filmDetailsComponent);
-    document.addEventListener(`keydown`, onEscKeyDown);
-  };
-
-  const onFilmDetailsButtonCloseClick = () => {
-    remove(filmDetailsComponent);
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  };
-
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscKey) {
-      onFilmDetailsButtonCloseClick();
-    }
-  };
-
-  const filmCardComponent = new FilmCardComponent(card);
-  const filmDetailsComponent = new FilmDetailsComponent(card);
-
-  filmCardComponent.setOnClick(onCardClick);
-  filmDetailsComponent.setOnButtonCloseClick(onFilmDetailsButtonCloseClick);
-
-  render(cardContainerElement, filmCardComponent);
-};
-
 const renderListCards = (cardsListContainerElement, tasks) => {
   tasks.forEach((task) => {
     renderCard(cardsListContainerElement, task);
