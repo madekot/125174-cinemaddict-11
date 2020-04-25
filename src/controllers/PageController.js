@@ -5,22 +5,39 @@ import FilmListItemComponent from "../components/films-list";
 import {constants} from "../constants";
 import ShowMoreButtonComponent from "../components/show-more-button";
 
-const renderCards = (cardListContainerElement, card) => {
-  const onClickCard = () => {
+const renderCard = (cardContainerElement, card) => {
+
+  const onCardClick = () => {
     render(document.body, filmDetailsComponent);
+    document.addEventListener(`keydown`, onEscKeyDown);
   };
 
-  const onFilmDetailsButtonClose = () => {
+  const onFilmDetailsButtonCloseClick = () => {
     remove(filmDetailsComponent);
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  };
+
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      onFilmDetailsButtonCloseClick();
+    }
   };
 
   const filmCardComponent = new FilmCardComponent(card);
-  filmCardComponent.setOnClick(onClickCard);
-
   const filmDetailsComponent = new FilmDetailsComponent(card);
-  filmDetailsComponent.setOnButtonCloseClick(onFilmDetailsButtonClose);
 
-  render(cardListContainerElement, filmCardComponent);
+  filmCardComponent.setOnClick(onCardClick);
+  filmDetailsComponent.setOnButtonCloseClick(onFilmDetailsButtonCloseClick);
+
+  render(cardContainerElement, filmCardComponent);
+};
+
+const renderListCards = (cardsListContainerElement, tasks) => {
+  tasks.forEach((task) => {
+    renderCard(cardsListContainerElement, task);
+  });
 };
 
 export default class PageController {
@@ -31,27 +48,24 @@ export default class PageController {
     this._showMoreButtonComponent = new ShowMoreButtonComponent();
   }
 
-  render(cards) {
-    const container = this._container.getElement();
-    const renderFilmCards = (from, to) => {
-      cards.slice(from, to).forEach((card) => renderCards(cardListContainerElement, card));
-    };
+  render(listCards) {
+    const cardsListContainerElement = this._filmListItemComponent.getElement().querySelector(`.films-list__container`);
 
-    const cardListContainerElement = this._filmListItemComponent.getElement().querySelector(`.films-list__container`);
-
-    renderFilmCards(0, constants.SHOWING_CARDS_COUNT_ON_START);
+    renderListCards(cardsListContainerElement, listCards.slice(0, constants.SHOWING_CARDS_COUNT_ON_START));
 
     if (constants.CARD_COUNT > constants.SHOWING_CARDS_COUNT_ON_START) {
       render(this._filmListItemComponent.getElement(), this._showMoreButtonComponent);
 
       this._showMoreButtonComponent.setOnClick(() => {
-        renderFilmCards(cardListContainerElement.children.length, cardListContainerElement.children.length + constants.SHOWING_CARDS_COUNT_BY_BUTTON);
-        if (cardListContainerElement.children.length >= cards.length) {
+        let showingTasksCount = cardsListContainerElement.children.length + constants.SHOWING_CARDS_COUNT_BY_BUTTON;
+        renderListCards(cardsListContainerElement, listCards.slice(cardsListContainerElement.children.length, showingTasksCount));
+
+        if (cardsListContainerElement.children.length >= listCards.length) {
           remove(this._showMoreButtonComponent);
         }
       });
     }
 
-    render(container, this._filmListItemComponent);
+    render(this._container.getElement(), this._filmListItemComponent);
   }
 }
