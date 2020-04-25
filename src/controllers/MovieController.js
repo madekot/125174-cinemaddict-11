@@ -2,13 +2,12 @@ import {remove, render} from "../utils/render";
 import FilmCardComponent from "../components/film-card";
 import FilmDetailsComponent from "../components/film-details";
 
-export default class TaskController {
+export default class MovieController {
   constructor(container) {
     this._container = container;
 
     this._filmCardComponent = null;
     this._filmDetailsComponent = null;
-
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
@@ -16,7 +15,8 @@ export default class TaskController {
     this._filmCardComponent = new FilmCardComponent(card);
     this._filmDetailsComponent = new FilmDetailsComponent(card);
 
-    this._filmCardComponent.setOnClick(() => {
+    this._filmCardComponent.setOnClick((evt) => {
+      evt.preventDefault();
       render(document.body, this._filmDetailsComponent);
       document.addEventListener(`keydown`, this._onEscKeyDown);
     });
@@ -33,7 +33,7 @@ export default class TaskController {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
     if (isEscKey) {
-      this._replaceEditToTask();
+      remove(this._filmDetailsComponent);
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
   }
