@@ -11,6 +11,17 @@ const createFilmCardControlsListMarcup = (...isActive) => {
   }).join(constants.EMPTY_SYMBOL);
 };
 
+// const createButtonMarkup = (name, isActive = true) => {
+//   return (
+//     `<button
+//       type="button"
+//       class="card__btn card__btn--${name} ${isActive ? `` : `card__btn--disabled`}"
+//     >
+//       ${name}
+//     </button>`
+//   );
+// };
+
 const createFilmCardTemplate = (filmCard) => {
   const {title, rating, year, duration, genre, src, description, comments, isWatchlist, isWatched, isFavorite} = filmCard;
   return (
@@ -42,7 +53,8 @@ export default class FilmCard extends AbstractComponent {
     return createFilmCardTemplate(this._card);
   }
 
-  setOnClick(handler) {
-    this.getElement().addEventListener(`click`, handler);
+  setOnPosterClick(handler) {
+    this.getElement().querySelector(`.film-card__poster`)
+      .addEventListener(`click`, handler);
   }
 }

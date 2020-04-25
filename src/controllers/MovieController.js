@@ -15,7 +15,7 @@ export default class MovieController {
     this._filmCardComponent = new FilmCardComponent(card);
     this._filmDetailsComponent = new FilmDetailsComponent(card);
 
-    this._filmCardComponent.setOnClick((evt) => {
+    this._filmCardComponent.setOnPosterClick((evt) => {
       evt.preventDefault();
       render(document.body, this._filmDetailsComponent);
       document.addEventListener(`keydown`, this._onEscKeyDown);
