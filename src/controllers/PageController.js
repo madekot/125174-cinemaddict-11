@@ -4,9 +4,9 @@ import {constants} from "../constants";
 import ShowMoreButtonComponent from "../components/show-more-button";
 import MovieController from "./MovieController";
 
-const renderListCards = (cardsListContainerElement, ListCards) => {
+const renderListCards = (cardsListContainerElement, ListCards, onDataChange) => {
   return ListCards.map((card) => {
-    const movieController = new MovieController(cardsListContainerElement);
+    const movieController = new MovieController(cardsListContainerElement, onDataChange);
     movieController.render(card);
     return movieController;
   });
@@ -45,12 +45,14 @@ export default class PageController {
     this._showMoreButtonComponent = new ShowMoreButtonComponent();
     this._cardsListContainerElement = this._filmListItemComponent.getElement().querySelector(`.films-list__container`);
     this._showingListCardsCount = constants.SHOWING_CARDS_COUNT_ON_START;
+
+    this._onDataChange = this._onDataChange.bind(this);
   }
 
   render(listCards) {
     this._listCards = listCards;
 
-    const newListCards = renderListCards(this._cardsListContainerElement, this._listCards.slice(0, this._showingListCardsCount));
+    const newListCards = renderListCards(this._cardsListContainerElement, this._listCards.slice(0, this._showingListCardsCount), this._onDataChange);
     this._showedListCardsControllers = this._showedListCardsControllers.concat(newListCards);
 
     render(this._container.getElement(), this._filmListItemComponent);
@@ -60,12 +62,23 @@ export default class PageController {
     }
   }
 
+  _onDataChange(listTasksController, oldData, newData) {
+    const index = this._listCards.findIndex((card) => card === oldData);
+
+    if (index === -1) {
+      return;
+    }
+
+    this._listCards = [].concat(this._listCards.slice(0, index), newData, this._listCards.slice(index + 1));
+    listTasksController.render(this._listCards[index]);
+  }
+
   _renderShowMoreButtonComponent() {
     render(this._filmListItemComponent.getElement(), this._showMoreButtonComponent);
 
     this._showMoreButtonComponent.setOnClick(() => {
       const sortedListCards = this._listCards.slice(this._cardsListContainerElement.children.length, this._cardsListContainerElement.children.length + this._showingListCardsCount); // TODO: тут функция сортировки отдает массив карточек... но пока её нет
-      const newListCards = renderListCards(this._cardsListContainerElement, sortedListCards);
+      const newListCards = renderListCards(this._cardsListContainerElement, sortedListCards, this._onDataChange);
       this._showedListCardsControllers = this._showedListCardsControllers.concat(newListCards);
       if (this._cardsListContainerElement.children.length >= this._listCards.length) {
         remove(this._showMoreButtonComponent);

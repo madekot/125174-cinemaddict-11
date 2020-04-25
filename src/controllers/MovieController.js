@@ -3,8 +3,9 @@ import FilmCardComponent from "../components/film-card";
 import FilmDetailsComponent from "../components/film-details";
 
 export default class MovieController {
-  constructor(container) {
+  constructor(container, onDataChange) {
     this._container = container;
+    this._onDataChange = onDataChange;
 
     this._filmCardComponent = null;
     this._filmDetailsComponent = null;
@@ -28,17 +29,23 @@ export default class MovieController {
 
     this._filmCardComponent.setOnAddWatchlistButtonClick((evt) => {
       evt.preventDefault();
-      console.log(`click_1`);
+      this._onDataChange(this, card, Object.assign({}, card, {
+        isWatchlist: !card.isWatchlist,
+      }));
     });
 
     this._filmCardComponent.setOnMarkWatchedButtonClick((evt) => {
       evt.preventDefault();
-      console.log(`click_2`);
+      this._onDataChange(this, card, Object.assign({}, card, {
+        isWatched: !card.isWatched,
+      }));
     });
 
     this._filmCardComponent.setOnFavoriteButtonClick((evt) => {
       evt.preventDefault();
-      console.log(`click_3`);
+      this._onDataChange(this, card, Object.assign({}, card, {
+        isFavorite: !card.isFavorite,
+      }));
     });
 
     render(this._container, this._filmCardComponent);
