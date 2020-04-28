@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract-component";
+import AbstractSmartComponent from "./abstract-smart-component";
 import {constants} from "../constants";
 
 const createFilmCardControlItemMarcup = (nameClassModifier, text, isActive) => {
@@ -10,17 +10,6 @@ const createFilmCardControlsListMarcup = (...isActive) => {
     return createFilmCardControlItemMarcup(constants.FILM_CARD_CONTROLS[i].claccName, constants.FILM_CARD_CONTROLS[i].buttonText, isActive[i]);
   }).join(constants.EMPTY_SYMBOL);
 };
-
-// const createButtonMarkup = (name, isActive = true) => {
-//   return (
-//     `<button
-//       type="button"
-//       class="card__btn card__btn--${name} ${isActive ? `` : `card__btn--disabled`}"
-//     >
-//       ${name}
-//     </button>`
-//   );
-// };
 
 const createFilmCardTemplate = (filmCard) => {
   const {title, rating, year, duration, genre, src, description, comments, isWatchlist, isWatched, isFavorite} = filmCard;
@@ -43,19 +32,60 @@ const createFilmCardTemplate = (filmCard) => {
   );
 };
 
-export default class FilmCard extends AbstractComponent {
+export default class FilmCard extends AbstractSmartComponent {
   constructor(card) {
     super();
+
     this._card = card;
+    this._onPosterClick = null;
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
     return createFilmCardTemplate(this._card);
   }
 
+  recoveryListeners() {
+    this.setOnPosterClick(this._onPosterClick);
+    this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.querySelector(`.film-card__controls-item--add-to-watchlist`)
+      .addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        this._card.isWatchlist = !this._card.isWatchlist;
+
+        this.rerender();
+      });
+
+    element.querySelector(`.film-card__controls-item--mark-as-watched`)
+      .addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        this._card.isWatched = !this._card.isWatched;
+
+        this.rerender();
+      });
+
+    element.querySelector(`.film-card__controls-item--favorite`)
+      .addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        this._card.isFavorite = !this._card.isFavorite;
+
+        this.rerender();
+      });
+  }
+
   setOnPosterClick(handler) {
     this.getElement().querySelector(`.film-card__poster`)
       .addEventListener(`click`, handler);
+    this._onPosterClick = handler;
   }
 
   setOnAddWatchlistButtonClick(handler) {

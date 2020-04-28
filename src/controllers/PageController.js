@@ -62,15 +62,14 @@ export default class PageController {
     }
   }
 
-  _onDataChange(listTasksController, oldData, newData) {
+  _onDataChange(listCardsController, oldData, newData) {
     const index = this._listCards.findIndex((card) => card === oldData);
 
     if (index === -1) {
       return;
     }
-
     this._listCards = [].concat(this._listCards.slice(0, index), newData, this._listCards.slice(index + 1));
-    listTasksController.render(this._listCards[index]);
+    listCardsController.render(this._listCards[index]);
   }
 
   _renderShowMoreButtonComponent() {

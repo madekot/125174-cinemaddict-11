@@ -1,5 +1,5 @@
-import AbstractComponent from "./abstract-component";
 import {constants} from "../constants.js";
+import AbstractSmartComponent from "./abstract-smart-component";
 
 const generateEmojiPath = (emojiName) => {
   return `${constants.EMOJI_PATH}${emojiName}${constants.EMOJI_EXTENSION_FILE}`;
@@ -161,33 +161,74 @@ const createPopUpFilmDetailsTemplate = (filmCard) => {
   );
 };
 
-export default class FilmDetails extends AbstractComponent {
+export default class FilmDetails extends AbstractSmartComponent {
   constructor(card) {
     super();
     this._card = card;
+    this._OnButtonCloseClick = null;
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
     return createPopUpFilmDetailsTemplate(this._card);
   }
 
+  recoveryListeners() {
+    console.log(this._filmDetailsComponent)
+    this.setOnButtonCloseClick(this._OnButtonCloseClick);
+    this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.querySelector(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        this._card.isWatchlist = !this._card.isWatchlist;
+
+        this.rerender();
+      });
+
+    element.querySelector(`.film-details__control-label--watched`)
+      .addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        this._card.isWatched = !this._card.isWatched;
+
+        this.rerender();
+      });
+
+    element.querySelector(`.film-details__control-label--favorite`)
+      .addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        this._card.isFavorite = !this._card.isFavorite;
+
+        this.rerender();
+      });
+  }
+
   setOnButtonCloseClick(handler) {
     this.getElement().querySelector(`.film-details__close-btn`)
       .addEventListener(`click`, handler);
+    this._OnButtonCloseClick = handler;
   }
 
   setOnAddWatchlistClick(handler) {
-    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`)
+    this.getElement().querySelector(`.film-details__control-label--watchlist`)
       .addEventListener(`click`, handler);
   }
 
   setOnMarkWatchedClick(handler) {
-    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`)
+    this.getElement().querySelector(`.film-details__control-label--watched`)
       .addEventListener(`click`, handler);
   }
 
   setOnFavoriteClick(handler) {
-    this.getElement().querySelector(`.film-card__controls-item--favorite`)
+    this.getElement().querySelector(`.film-details__control-label--favorite`)
       .addEventListener(`click`, handler);
   }
 }

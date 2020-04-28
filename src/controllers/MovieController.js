@@ -9,6 +9,7 @@ export default class MovieController {
 
     this._filmCardComponent = null;
     this._filmDetailsComponent = null;
+
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
@@ -18,13 +19,13 @@ export default class MovieController {
 
     this._filmCardComponent.setOnPosterClick((evt) => {
       evt.preventDefault();
-      render(document.body, this._filmDetailsComponent);
+      this._showFilmDetailsComponent();
       document.addEventListener(`keydown`, this._onEscKeyDown);
-    });
 
-    this._filmDetailsComponent.setOnButtonCloseClick((evt) => {
-      evt.preventDefault();
-      remove(this._filmDetailsComponent);
+      this._filmDetailsComponent.setOnButtonCloseClick(() => {
+        this._hideFilmDetailsComponent();
+        document.removeEventListener(`keydown`, this._onEscKeyDown);
+      });
     });
 
     this._filmCardComponent.setOnAddWatchlistButtonClick((evt) => {
@@ -48,6 +49,28 @@ export default class MovieController {
       }));
     });
 
+    this._filmDetailsComponent.setOnAddWatchlistClick((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, card, Object.assign({}, card, {
+        isWatchlist: !card.isWatchlist,
+      }));
+    });
+
+    this._filmDetailsComponent.setOnMarkWatchedClick((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, card, Object.assign({}, card, {
+        isWatched: !card.isWatched,
+      }));
+    });
+
+    this._filmDetailsComponent.setOnFavoriteClick((evt) => {
+      evt.preventDefault();
+      this._onDataChange(this, card, Object.assign({}, card, {
+        isFavorite: !card.isFavorite,
+      }));
+    });
+
+
     render(this._container, this._filmCardComponent);
   }
 
@@ -58,5 +81,13 @@ export default class MovieController {
       remove(this._filmDetailsComponent);
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
+  }
+
+  _showFilmDetailsComponent() {
+    render(document.body, this._filmDetailsComponent);
+  }
+
+  _hideFilmDetailsComponent() {
+    remove(this._filmDetailsComponent);
   }
 }
