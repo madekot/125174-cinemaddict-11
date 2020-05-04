@@ -165,7 +165,6 @@ export default class FilmDetails extends AbstractSmartComponent {
   constructor(card) {
     super();
     this._card = card;
-    this._OnButtonCloseClick = null;
     this._subscribeOnEvents();
   }
 
@@ -174,8 +173,6 @@ export default class FilmDetails extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
-    console.log(this._filmDetailsComponent)
-    this.setOnButtonCloseClick(this._OnButtonCloseClick);
     this._subscribeOnEvents();
   }
 
@@ -185,6 +182,12 @@ export default class FilmDetails extends AbstractSmartComponent {
 
   _subscribeOnEvents() {
     const element = this.getElement();
+
+    element.querySelector(`.film-details__close-btn`)
+      .addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        element.remove();
+      });
 
     element.querySelector(`.film-details__control-label--watchlist`)
       .addEventListener(`click`, (evt) => {
@@ -214,7 +217,6 @@ export default class FilmDetails extends AbstractSmartComponent {
   setOnButtonCloseClick(handler) {
     this.getElement().querySelector(`.film-details__close-btn`)
       .addEventListener(`click`, handler);
-    this._OnButtonCloseClick = handler;
   }
 
   setOnAddWatchlistClick(handler) {

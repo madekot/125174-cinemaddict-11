@@ -1,4 +1,4 @@
-import {remove, render} from "../utils/render";
+import {render} from "../utils/render";
 import FilmCardComponent from "../components/film-card";
 import FilmDetailsComponent from "../components/film-details";
 
@@ -9,8 +9,6 @@ export default class MovieController {
 
     this._filmCardComponent = null;
     this._filmDetailsComponent = null;
-
-    this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
   render(card) {
@@ -19,13 +17,7 @@ export default class MovieController {
 
     this._filmCardComponent.setOnPosterClick((evt) => {
       evt.preventDefault();
-      this._showFilmDetailsComponent();
-      document.addEventListener(`keydown`, this._onEscKeyDown);
-
-      this._filmDetailsComponent.setOnButtonCloseClick(() => {
-        this._hideFilmDetailsComponent();
-        document.removeEventListener(`keydown`, this._onEscKeyDown);
-      });
+      render(document.body, this._filmDetailsComponent);
     });
 
     this._filmCardComponent.setOnAddWatchlistButtonClick((evt) => {
@@ -47,6 +39,10 @@ export default class MovieController {
       this._onDataChange(this, card, Object.assign({}, card, {
         isFavorite: !card.isFavorite,
       }));
+    });
+
+    this._filmDetailsComponent.setOnButtonCloseClick(() => {
+      this._filmDetailsComponent.getElement().remove();
     });
 
     this._filmDetailsComponent.setOnAddWatchlistClick((evt) => {
@@ -72,22 +68,5 @@ export default class MovieController {
 
 
     render(this._container, this._filmCardComponent);
-  }
-
-  _onEscKeyDown(evt) {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscKey) {
-      remove(this._filmDetailsComponent);
-      document.removeEventListener(`keydown`, this._onEscKeyDown);
-    }
-  }
-
-  _showFilmDetailsComponent() {
-    render(document.body, this._filmDetailsComponent);
-  }
-
-  _hideFilmDetailsComponent() {
-    remove(this._filmDetailsComponent);
   }
 }
